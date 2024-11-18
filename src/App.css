@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: rgb(210, 240, 195);
+}
+
+.logo{
+position: absolute; 
+  top: 2rem; 
+  left: 2rem; g
+  width: 30%; 
+  height: auto;
+}
