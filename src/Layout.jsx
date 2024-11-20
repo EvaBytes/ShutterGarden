@@ -8,7 +8,7 @@ import './Layout.css';
 import logo from './assets/ShutterGarden.png';
 
 
-function Layout() {
+function Layout() { 
 
   return (
     <Provider store={store}>
