@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: rgb(215, 236, 205);
+  background-color: rgb(200, 220, 191);
 }
 
 .logo{
@@ -11,6 +11,7 @@ position: absolute;
   width: 70%; 
   height: auto;
 }
+
 
 @media only screen and (min-width: 1000px){
   .logo{
