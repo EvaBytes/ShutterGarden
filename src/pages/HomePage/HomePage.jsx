@@ -69,7 +69,7 @@ export const HomePage = () => {
             </form>
 
             <button className="favorites-button" onClick={navigateToFavorites}>
-                <img className="heart-phone" src="src/assets/heartPhone.png" alt="Favorite Icon" />
+                <img src="src/assets/heartPhone.png" alt="Favorite Icon" />
             </button>
 
             <div className="image-gallery">
