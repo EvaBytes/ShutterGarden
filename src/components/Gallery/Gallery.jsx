@@ -1,9 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUnsplashImages } from '../../features/unsplashSlice';
-import { addFavorite } from '../../features/favoritesSlice';
-import SearchBar from '../components/SearchBar';
-import ImageCard from '../components/ImageCard';
 
 const Gallery = ({ images }) => {
     if (images.length === 0) {

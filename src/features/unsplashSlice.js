@@ -26,7 +26,7 @@ const unsplashSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchPhotos.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = 'fulfilled';
         state.photos = action.payload; 
       })
       .addCase(fetchPhotos.rejected, (state, action) => {

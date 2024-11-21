@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom"; 
 import "./HomePage.css";
 
 export const HomePage = () => {
@@ -41,13 +41,6 @@ export const HomePage = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         fetchImages(searchQuery);
-    };
-
-    const handleAddToFavorites = (image) => {
-        const existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-        const updatedFavorites = [...existingFavorites, image];
-        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-        alert("Image added to favorites!");
     };
 
     const navigateToFavorites = () => {
