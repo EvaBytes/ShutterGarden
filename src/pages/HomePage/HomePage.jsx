@@ -1,43 +1,85 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // For navigation
+import "./HomePage.css";
 
 export const HomePage = () => {
     const [images, setImages] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
+
+    const fetchImages = async (query = "") => {
+        try {
+            const clientId = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
+
+            if (!clientId) {
+                console.error("Unsplash Access Key is missing!");
+                return;
+            }
+
+            const endpoint = query
+                ? `https://api.unsplash.com/search/photos?query=${query}&per_page=12&client_id=${clientId}`
+                : `https://api.unsplash.com/photos/random?count=12&client_id=${clientId}`;
+
+            const response = await fetch(endpoint);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            setImages(query ? data.results : data);
+        } catch (error) {
+            console.error("Error fetching images:", error);
+        }
+    };
 
     useEffect(() => {
-        const getRandomImages = async () => {
-            try {
-                const clientId = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
-
-                if (!clientId) {
-                    console.error("Unsplash Access Key is missing!");
-                    return;
-                }
-
-                
-                const response = await fetch(
-                    `https://api.unsplash.com/photos/random?count=12&client_id=${clientId}`
-                );
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                setImages(data); // 
-                localStorage.setItem("randomImages", JSON.stringify(data));
-            } catch (error) {
-                console.error("Error fetching images:", error);
-            }
-        };
-
-        getRandomImages();
+        fetchImages();
     }, []);
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        fetchImages(searchQuery);
+    };
+
+    const handleAddToFavorites = (image) => {
+        const existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        const updatedFavorites = [...existingFavorites, image];
+        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        alert("Image added to favorites!");
+    };
+
+    const navigateToFavorites = () => {
+        navigate("/favorites");
+    };
+
     return (
-        <div>
-            {images.map((image) => (
-                <img key={image.id} src={image.urls.small} alt={image.alt_description} />
-            ))}
+        <div className="homepage">
+            <form className="search-bar" onSubmit={handleSearch}>
+                <input
+                    type="text"
+                    placeholder="What are you looking for?"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button type="submit" aria-label="Search">
+                    <img src="src/assets/searchSMALL.png" alt="Search Icon" />
+                </button>
+            </form>
+
+            <button className="favorites-button" onClick={navigateToFavorites}>
+                <img className="heart-phone" src="src/assets/heartPhone.png" alt="Favorite Icon" />
+            </button>
+
+            <div className="image-gallery">
+                {images.map((image) => (
+                    <div key={image.id} className="image-container">
+                        <img src={image.urls.small} alt={image.alt_description} />
+                        <button onClick={() => handleAddToFavorites(image)}>Add to Favorites</button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
