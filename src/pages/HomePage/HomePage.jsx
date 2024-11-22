@@ -13,9 +13,6 @@ const HomePage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [favorites, setFavorites] = useState([]);
 
-    useEffect(() => {
-        dispatch(fetchImages({ query: "", page: 1 }));
-    }, [dispatch]);
 
     const handleSearch = (e) => {
         e.preventDefault();
