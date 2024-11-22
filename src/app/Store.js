@@ -1,16 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import homeReducer from '../features/homeSlice';
-import favoritesReducer from '../features/favoritesSlice';
-import unsplashReducer from '../features/unsplashSlice'; 
+import favoriteReducer from './features/favoritesSlice.js';
+import homeReducer from './features/homeSlice.js';
+import unsplashReducer from './features/unsplashSlice.js';
 
 const store = configureStore({
   reducer: {
-    homepage: homeReducer, 
-    favorites: favoritesReducer, 
+    favorites: favoriteReducer,
+    home: homeReducer,
     unsplash: unsplashReducer,
   },
 });
 
 export default store;
-
-

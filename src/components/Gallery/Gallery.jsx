@@ -1,23 +1,17 @@
-import React, { useState } from 'react';
+import React from "react";
+import "./Gallery.css";
 
-const Gallery = ({ images }) => {
-    if (images.length === 0) {
-        return <p>No images to display.</p>;
-    }
-    
-    return (
-    <div className="gallery">
-        {images.map((image) => (
-            <div className="gallery-item" key={image.id}>
-                <img
-                    src={image.urls.small}
-                    alt={image.alt_description || "Unsplash Image"}
-                    className="gallery-image"
-                />
-            </div>
-        ))}
-    </div>
-    );
-};
-
-export default Gallery;
+export const Gallery = ({ images, deleteButton, downloadButton, favButton }) => (
+  <div className="gallery">
+    {images.map((image) => (
+      <div key={image.id} className="image-container">
+        <img src={image.urls.small} alt={image.alt_description} />
+        <div className="buttons">
+          {favButton}
+          {deleteButton}
+          {downloadButton}
+        </div>
+      </div>
+    ))}
+  </div>
+);

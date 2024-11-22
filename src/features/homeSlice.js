@@ -1,14 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const homeSlice = createSlice({
-  name: 'homepage',
-  initialState: [],
+  name: 'home',
+  initialState: { images: [], searchQuery: '' },
   reducers: {
-    updateMessage: (state, action) => {
-      state.message = action.payload;
+    setImages: (state, action) => {
+      state.images = action.payload;
+    },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
     },
   },
 });
 
-export const { updateMessage } = homeSlice.actions; 
+export const { setImages, setSearchQuery } = homeSlice.actions;
 export default homeSlice.reducer;

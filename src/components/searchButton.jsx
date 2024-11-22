@@ -1,7 +1,12 @@
-export const SearchButton = ({ onClick }) => {
+import React from "react";
+import searchIcon from "./assets/searchSMALL.png";
+
+const SearchButton = ({ onClick }) => {
     return (
         <button type="submit" aria-label="Search" onClick={onClick}>
-            <img src="src/assets/searchSMALL.png" alt="Search Icon" />
+            <img src={searchIcon} alt="Search Icon" />
         </button>
     );
 };
+
+export default SearchButton;

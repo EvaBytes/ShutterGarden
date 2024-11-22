@@ -1,50 +1,38 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; 
-import "./HomePage.css";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchImages } from "./features/unsplashSlice.js";
+import DeleteButton from "./components/DeleteButton";
+import DownloadButton from "./components/DownloadButton";
+import FavButton from "../components/FavButton";
+import FilterFavorite from "./components/FilterFavorite";
+import "./pages/HomePage/HomePage.css";
 
-export const HomePage = () => {
-    const [images, setImages] = useState([]);
+const HomePage = () => {
+    const dispatch = useDispatch();
+    const { images: photos, loading: status, error } = useSelector((state) => state.unsplash);
     const [searchQuery, setSearchQuery] = useState("");
-    const navigate = useNavigate();
-
-    const fetchImages = async (query = "") => {
-        try {
-            const clientId = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
-
-            if (!clientId) {
-                console.error("Unsplash Access Key is missing!");
-                return;
-            }
-
-            const endpoint = query
-                ? `https://api.unsplash.com/search/photos?query=${query}&per_page=12&client_id=${clientId}`
-                : `https://api.unsplash.com/photos/random?count=12&client_id=${clientId}`;
-
-            const response = await fetch(endpoint);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            setImages(query ? data.results : data);
-        } catch (error) {
-            console.error("Error fetching images:", error);
-        }
-    };
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
-        fetchImages();
-    }, []);
+        dispatch(fetchImages({ query: "", page: 1 }));
+    }, [dispatch]);
 
     const handleSearch = (e) => {
         e.preventDefault();
-        fetchImages(searchQuery);
+        if (!searchQuery.trim()) {
+            console.error("Search query cannot be empty");
+            return;
+        }
+        dispatch(fetchImages({ query: searchQuery.trim(), page: 1 }));
     };
+    
 
-    const navigateToFavorites = () => {
-        navigate("/favorites");
+    const handleAddToFavorites = (image) => {
+        setFavorites((prev) =>
+            prev.some((fav) => fav.id === image.id)
+                ? prev.filter((fav) => fav.id !== image.id)
+                : [...prev, image]
+        );
     };
 
     return (
@@ -61,18 +49,29 @@ export const HomePage = () => {
                 </button>
             </form>
 
-            <button className="favorites-button" onClick={navigateToFavorites}>
-                <img src="src/assets/heartPhone.png" alt="Favorite Icon" />
-            </button>
+            <FilterFavorite onFilter={() => console.log("Filtering favorites...")} />
+            {status === "loading" && <p>Loading...</p>}
+            {status === "failed" && <p className="error-message">{error}</p>}
 
             <div className="image-gallery">
-                {images.map((image) => (
-                    <div key={image.id} className="image-container">
-                        <img src={image.urls.small} alt={image.alt_description} />
-                        <button onClick={() => handleAddToFavorites(image)}>Add to Favorites</button>
-                    </div>
-                ))}
+                {photos.length > 0 &&
+                    photos.map((image) => (
+                        <div key={image.id} className="image-container">
+                            <img src={image.urls.small} alt={image.alt_description} />
+                            <div className="image-actions">
+                                <DownloadButton image={image} />
+                                <FavButton
+                                    image={image}
+                                    onToggleFavorite={handleAddToFavorites}
+                                    isFavorite={favorites.some((fav) => fav.id === image.id)}
+                                />
+                                <DeleteButton image={image} onDelete={() => console.log("Delete")} />
+                            </div>
+                        </div>
+                    ))}
             </div>
         </div>
     );
 };
+
+export default HomePage;

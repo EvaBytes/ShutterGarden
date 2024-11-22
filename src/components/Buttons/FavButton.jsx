@@ -1,7 +1,13 @@
-export const FavButton = ({ onClick }) => {
-    return (
-        <button className="favorites-button" onClick={onClick}>
-            <img src="src/assets/heartPhone.png" alt="Favorite Icon" />
-        </button>
-    );
+import React from "react";
+import heartIcon from "./assets/heartPhone.png";
+
+const FavButton = ({ onToggleFavorite, image, isFavorite }) => {
+  return (
+    <button onClick={() => onToggleFavorite(image)}>
+      <img src={heartIcon} alt="Favorite Icon" />
+      {isFavorite ? "Unfavorite" : "Favorite"}
+    </button>
+  );
 };
+
+export default FavButton;
