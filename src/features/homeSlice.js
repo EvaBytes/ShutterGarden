@@ -14,4 +14,5 @@ const homeSlice = createSlice({
 });
 
 export const { setImages, setSearchQuery } = homeSlice.actions;
-export default homeSlice.reducer;
+export const homeReducer = homeSlice.reducer;
+

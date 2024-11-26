@@ -1,6 +1,6 @@
-import React from "react";
+import {React} from "react";
 
-const DownloadButton = ({ image }) => {
+export const DownloadButton = ({ image }) => {
   const handleDownload = () => {
     try {
       if (!image?.urls?.full) {
@@ -30,4 +30,3 @@ const DownloadButton = ({ image }) => {
   );
 };
 
-export default DownloadButton;

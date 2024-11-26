@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchImages } from "../../features/unsplashSlice";
-import DeleteButton from "../../components/Buttons/DeleteButton.jsx";
-import DownloadButton from "../../components/Buttons/DownloadButton.jsx";
-import FavButton from "../../components/Buttons/FavButton.jsx";
+import {DeleteButton} from "../../components/Buttons/DeleteButton.jsx";
+import {DownloadButton} from "../../components/Buttons/DownloadButton.jsx";
+import {FavButton} from "../../components/Buttons/FavButton.jsx";
 import "./HomePage.css";
 
-const HomePage = () => {
+export const HomePage = () => {
     const dispatch = useDispatch();
     const { images, loading, error } = useSelector((state) => state.unsplash);
     const [searchQuery, setSearchQuery] = useState("");
     const [favorites, setFavorites] = useState([]);
     const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
     
+    
     useEffect(() => {
-    dispatch(fetchImages(""));
-}, [dispatch]);
+        const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        setFavorites(savedFavorites);
+        dispatch(fetchImages(""));
+    }, [dispatch]);
+    
+    useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+}, [favorites]);
+
 
 const handleSearch = (e) => {
     e.preventDefault();
@@ -30,45 +38,58 @@ const handleToggleFavorite = (image) => {
     );
 };
 
+const handleDeleteImage = (image) => {
+    console.log("Deleted image:", image); 
+};
+
 const displayedImages = showFavoritesOnly
     ? images.filter((image) =>
         favorites.some((fav) => fav.id === image.id)
-    )
+)
     : images;
-
-return (
+    
+    
+    return (
     <div className="homepage">
-      {/* Header */}
-    <header className="homepage-header">
-        <img src="./assets/ShutterGarden.png" alt="ShutterGarden Logo" className="homepage-logo" />
+        <header className="homepage-header">
+        <img
+        src="./assets/ShutterGarden.png"
+        alt="ShutterGarden Logo"
+        className="homepage-logo"
+        />
         <button
+        
         className="favorites-button"
         onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
         >
-            
             <img
-            src={showFavoritesOnly ? "./assets/heartFull.png" : "./assets/heartEmpty.png"}
+            src={
+                showFavoritesOnly
+                ? "./assets/heartFull.png"
+                : "./assets/heartEmpty.png"
+            }
             alt="Favorites"
-            />
+        />
         </button>
-    </header>
+        </header>
 
-      {/* Search Bar */}
     <form className="search-bar" onSubmit={handleSearch}>
         <input
         type="text"
         placeholder="What are you looking for?"
+        aria-label="Search Input"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button type="submit">
+        <button type="submit" aria-label="Search">
             <img src="./assets/searchIcon.png" alt="Search" />
         </button>
-        </form>
+    </form>
 
-      {/* Image Gallery */}
-    {loading && <p>Loading...</p>}
+    {loading && <p className="loading">Loading images...</p>}
     {error && <p className="error-message">Error: {error}</p>}
+    
+    
     <div className="image-gallery">
         {displayedImages.length > 0 ? (
             displayedImages.map((image) => (
@@ -77,20 +98,19 @@ return (
                 <div className="image-actions">
                 <DownloadButton image={image} />
                 <FavButton
-                onToggleFavorite={handleToggleFavorite}
-                image={image}
-                isFavorite={favorites.some((fav) => fav.id === image.id)}
+                    onToggleFavorite={handleToggleFavorite}
+                    image={image}
+                    isFavorite={favorites.some((fav) => fav.id === image.id)}
                 />
-                <DeleteButton />
+                <DeleteButton onDelete={handleDeleteImage} image={image} />
                 </div>
             </div>
         ))
         ) : (
-            !loading && <p>No images to display.</p>
+        !loading && <p>No images to display.</p>
         )}
         </div>
     </div>
-    );
+);
 };
 
-export default HomePage;

@@ -1,4 +1,4 @@
-const FilterFavorite = ({ onFilter }) => {
+export const FilterFavorite = ({ onFilter }) => {
   const handleClick = () => {
     if (typeof onFilter === "function") {
       onFilter();

@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, Outlet } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './app/store.js';
-import HomePage from './pages/HomePage/HomePage.jsx';
-import FavoritesList from './pages/Favorites/FavoritesList.jsx';
-import DeleteButton from './components/Buttons/DeleteButton.jsx';
-import DownloadButton from './components/Buttons/DownloadButton.jsx';
-import FavButton from './components/Buttons/FavButton.jsx';
-import FilterFavorite from './components/Buttons/FilterFavorite.jsx';
-import Gallery from './components/Gallery/Gallery.jsx';
+import {store} from './app/store.js';
+import {HomePage} from './pages/HomePage/HomePage.jsx';
+import {FavoritesList} from './pages/Favorites/FavoritesList.jsx';
+import {DeleteButton} from './components/Buttons/DeleteButton.jsx';
+import {DownloadButton} from './components/Buttons/DownloadButton.jsx';
+import {FavButton} from './components/Buttons/FavButton.jsx';
+import { FilterFavorite } from './components/Buttons/FilterFavorite.jsx';
+import {Gallery} from './components/Gallery/Gallery.jsx';
 import logo from './assets/ShutterGarden.png';
 import './Layout.css';
 
@@ -30,7 +30,7 @@ const MainLayout = () => (
   </>
 );
 
-function Layout() {
+export default function Layout() {
   const homePageElement = (
     <HomePage
       accessKey={unsplashAccessKey}
@@ -63,4 +63,3 @@ function Layout() {
   );
 }
 
-export default Layout;

@@ -40,4 +40,5 @@ const unsplashSlice = createSlice({
   },
 });
 
-export default unsplashSlice.reducer;
+export const { setImages } = unsplashSlice.actions;
+export const unsplashReducer = unsplashSlice.reducer;

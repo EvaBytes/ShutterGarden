@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 
-const DeleteButton = () => {
+export const DeleteButton = () => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleClick = () => {
@@ -14,9 +14,8 @@ const DeleteButton = () => {
 
   return (
     <button className="delete-button" onClick={handleClick} aria-label="Delete Image">
-      🗑️ Delete
+      Delete
     </button>
   );
 };
 
-export default DeleteButton;

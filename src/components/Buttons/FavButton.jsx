@@ -1,7 +1,7 @@
-import React from "react";
+import {React} from "react";
 import heartIcon from "../../assets/heartPhone.png";
 
-const FavButton = ({ onToggleFavorite, image, isFavorite }) => {
+export const FavButton = ({ onToggleFavorite, image, isFavorite }) => {
   return (
     <button
       className={`fav-button ${isFavorite ? "active" : ""}`}
@@ -14,4 +14,3 @@ const FavButton = ({ onToggleFavorite, image, isFavorite }) => {
   );
 };
 
-export default FavButton;
