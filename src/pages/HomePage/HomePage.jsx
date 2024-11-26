@@ -4,6 +4,8 @@ import { fetchImages } from "../../features/unsplashSlice";
 import {DeleteButton} from "../../components/Buttons/DeleteButton.jsx";
 import {DownloadButton} from "../../components/Buttons/DownloadButton.jsx";
 import {FavButton} from "../../components/Buttons/FavButton.jsx";
+import search from "../../assets/searchSMALL.png";
+import download from "../../assets/DownloadSMALL.png";
 import "./HomePage.css";
 
 export const HomePage = () => {
@@ -52,11 +54,6 @@ const displayedImages = showFavoritesOnly
     return (
     <div className="homepage">
         <header className="homepage-header">
-        <img
-        src="./assets/ShutterGarden.png"
-        alt="ShutterGarden Logo"
-        className="homepage-logo"
-        />
         <button
         
         className="favorites-button"
@@ -82,7 +79,7 @@ const displayedImages = showFavoritesOnly
         onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button type="submit" aria-label="Search">
-            <img src="./assets/searchIcon.png" alt="Search" />
+            <img src={search} alt="Search" />
         </button>
     </form>
 
@@ -96,7 +93,7 @@ const displayedImages = showFavoritesOnly
             <div key={image.id} className="image-card">
                 <img src={image.urls.small} alt={image.alt_description} />
                 <div className="image-actions">
-                <DownloadButton image={image} />
+                <DownloadButton image={download} />
                 <FavButton
                     onToggleFavorite={handleToggleFavorite}
                     image={image}

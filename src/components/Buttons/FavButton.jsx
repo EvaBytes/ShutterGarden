@@ -1,4 +1,5 @@
 import {React} from "react";
+import "./FavButton.css";
 import heartIcon from "../../assets/heartPhone.png";
 
 export const FavButton = ({ onToggleFavorite, image, isFavorite }) => {

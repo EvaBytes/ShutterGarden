@@ -1,4 +1,5 @@
-import {React} from "react";
+import React from "react";
+import downloadIcon from "../../assets/DownloadSMALL.png"; 
 
 export const DownloadButton = ({ image }) => {
   const handleDownload = () => {
@@ -25,8 +26,7 @@ export const DownloadButton = ({ image }) => {
       onClick={handleDownload}
       aria-label="Download Image"
     >
-      Download
+      <img src={downloadIcon} alt="Download Icon" className="download-icon" />
     </button>
   );
 };
-

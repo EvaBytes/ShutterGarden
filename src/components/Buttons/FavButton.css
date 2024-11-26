@@ -1,0 +1,13 @@
+.fav-button {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.fav-button:hover {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.2);
+}

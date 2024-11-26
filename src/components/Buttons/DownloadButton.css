@@ -1,0 +1,19 @@
+.download-button {
+    width: .5rem; 
+    height: .5rem; 
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.download-button:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.download-icon {
+    width: .5rem; 
+    height: .5rem; 
+}
