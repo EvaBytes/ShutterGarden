@@ -54,21 +54,22 @@ const displayedImages = showFavoritesOnly
     return (
     <div className="homepage">
         <header className="homepage-header">
-        <button
-        
-        className="favorites-button"
-        onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-        >
-            <img
-            src={
-                showFavoritesOnly
-                ? "./assets/heartFull.png"
-                : "./assets/heartEmpty.png"
-            }
-            alt="Favorites"
+            <button
+            className="favorites-button"
+            onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+    >
+        <img
+        className="favorites-icon"
+        src={
+            showFavoritesOnly
+            ? "./assets/heartFull.png"
+            : "./assets/heartEmpty.png"
+        }
+        alt="Favorites"
         />
+        <span className="favorites-text">Favoritos</span>
         </button>
-        </header>
+    </header>
 
     <form className="search-bar" onSubmit={handleSearch}>
         <input
@@ -88,25 +89,22 @@ const displayedImages = showFavoritesOnly
     
     
     <div className="image-gallery">
-        {displayedImages.length > 0 ? (
-            displayedImages.map((image) => (
+        {displayedImages.map((image) => (
             <div key={image.id} className="image-card">
                 <img src={image.urls.small} alt={image.alt_description} />
-                <div className="image-actions">
-                <DownloadButton image={download} />
-                <FavButton
-                    onToggleFavorite={handleToggleFavorite}
-                    image={image}
-                    isFavorite={favorites.some((fav) => fav.id === image.id)}
-                />
-                <DeleteButton onDelete={handleDeleteImage} image={image} />
-                </div>
-            </div>
-        ))
-        ) : (
-        !loading && <p>No images to display.</p>
-        )}
+                <div className="image-overlay">
+        <DownloadButton image={image} />
+        <FavButton
+        onToggleFavorite={handleToggleFavorite}
+        image={image}
+        isFavorite={favorites.some((fav) => fav.id === image.id)}
+        />
         </div>
+    </div>
+))}
+</div>
+
+
     </div>
 );
 };

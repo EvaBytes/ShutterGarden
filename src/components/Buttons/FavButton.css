@@ -1,13 +1,31 @@
 .fav-button {
     background: none;
     border: none;
-    padding: 8px;
+    cursor: pointer;
+    padding: .5rem;
     border-radius: 50%;
     transition: transform 0.2s ease, background-color 0.2s ease;
-    cursor: pointer;
-}
+    }
 
 .fav-button:hover {
     transform: scale(1.1);
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2); 
+    }
+
+.fav-icon {
+    width: 1rem; 
+    height: 1rem;
+    filter: grayscale(100%); 
+    transition: filter 0.3s ease, transform 0.3s ease; 
+    }
+
+
+.fav-button.active .fav-icon {
+    filter: none; 
+    transform: scale(1.2); 
+}
+
+
+.fav-button.active:hover .fav-icon {
+    transform: scale(1.3); 
 }
