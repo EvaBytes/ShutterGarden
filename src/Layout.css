@@ -6,8 +6,8 @@ body {
 
 .logo{
   position: absolute; 
-  top: 1rem; 
-  left: 1rem; 
+  top: 1.5rem; 
+  left: 1.2rem; 
   width: 70%; 
   height: auto;
 }
@@ -17,7 +17,7 @@ body {
   .logo{
     position: absolute; 
       top: 1rem; 
-      left: 1rem; 
+      left: 2rem; 
       width: 30%; 
       height: auto;
     }

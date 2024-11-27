@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchImages } from "../../features/unsplashSlice";
-import {DeleteButton} from "../../components/Buttons/DeleteButton.jsx";
-import {DownloadButton} from "../../components/Buttons/DownloadButton.jsx";
-import {FavButton} from "../../components/Buttons/FavButton.jsx";
+import { DownloadButton } from "../../components/Buttons/DownloadButton.jsx";
+import { FavButton } from "../../components/Buttons/FavButton.jsx";
 import search from "../../assets/searchSMALL.png";
-import download from "../../assets/DownloadSMALL.png";
+import heartPhoneIcon from "../../assets/heartPhone.png";
 import "./HomePage.css";
 
 export const HomePage = () => {
@@ -14,98 +13,100 @@ export const HomePage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [favorites, setFavorites] = useState([]);
     const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
-    
-    
+    const [selectedImageId, setSelectedImageId] = useState(null); 
+
     useEffect(() => {
         const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
         setFavorites(savedFavorites);
         dispatch(fetchImages(""));
     }, [dispatch]);
-    
+
     useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-}, [favorites]);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+    }, [favorites]);
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        dispatch(fetchImages(searchQuery));
+    };
 
-const handleSearch = (e) => {
-    e.preventDefault();
-    dispatch(fetchImages(searchQuery));
-};
+    const handleToggleFavorite = (image) => {
+        setFavorites((prev) =>
+            prev.some((fav) => fav.id === image.id)
+                ? prev.filter((fav) => fav.id !== image.id)
+                : [...prev, image]
+        );
+    };
 
-const handleToggleFavorite = (image) => {
-    setFavorites((prev) =>
-        prev.some((fav) => fav.id === image.id)
-        ? prev.filter((fav) => fav.id !== image.id)
-        : [...prev, image]
+    const handleImageClick = (imageId) => {
+        setSelectedImageId((prev) => (prev === imageId ? null : imageId));
+    };
+
+    const displayedImages = showFavoritesOnly
+        ? images.filter((image) =>
+            favorites.some((fav) => fav.id === image.id)
+    )
+        : images;
+
+    return (
+        <div className="homepage">
+            <header className="homepage-header">
+                <button
+                    className="favorites-button"
+                    onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                >
+                    <img
+                        className="favorites-icon"
+                        src={heartPhoneIcon} 
+                        alt="Go to Favorites"
+        />
+
+                </button>
+            </header>
+
+            <form className="search-bar" onSubmit={handleSearch}>
+                <input
+                    type="text"
+                    placeholder="What are you looking for?"
+                    aria-label="Search Input"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button type="submit" aria-label="Search">
+                    <img src={search} alt="Search" />
+                </button>
+            </form>
+
+            {loading && <p className="loading">Loading images...</p>}
+            {error && <p className="error-message">Error: {error}</p>}
+
+            <div className="image-gallery">
+                {displayedImages.map((image) => (
+                    <div
+                        key={image.id}
+                        className={`image-card ${
+                            selectedImageId === image.id ? "selected" : ""
+                        }`}
+                        onClick={() => handleImageClick(image.id)}
+                    >
+                        <img src={image.urls.small} alt={image.alt_description} />
+                        <div
+                            className={`image-overlay ${
+                                selectedImageId === image.id ? "visible" : ""
+                            }`}
+                        >
+                            <DownloadButton image={image} />
+                            <FavButton
+                                onToggleFavorite={handleToggleFavorite}
+                                image={image}
+                                isFavorite={favorites.some(
+                                    (fav) => fav.id === image.id
+                                )}
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 };
-
-const handleDeleteImage = (image) => {
-    console.log("Deleted image:", image); 
-};
-
-const displayedImages = showFavoritesOnly
-    ? images.filter((image) =>
-        favorites.some((fav) => fav.id === image.id)
-)
-    : images;
-    
-    
-    return (
-    <div className="homepage">
-        <header className="homepage-header">
-            <button
-            className="favorites-button"
-            onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-    >
-        <img
-        className="favorites-icon"
-        src={
-            showFavoritesOnly
-            ? "./assets/heartFull.png"
-            : "./assets/heartEmpty.png"
-        }
-        alt="Favorites"
-        />
-        <span className="favorites-text">Favoritos</span>
-        </button>
-    </header>
-
-    <form className="search-bar" onSubmit={handleSearch}>
-        <input
-        type="text"
-        placeholder="What are you looking for?"
-        aria-label="Search Input"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button type="submit" aria-label="Search">
-            <img src={search} alt="Search" />
-        </button>
-    </form>
-
-    {loading && <p className="loading">Loading images...</p>}
-    {error && <p className="error-message">Error: {error}</p>}
-    
-    
-    <div className="image-gallery">
-        {displayedImages.map((image) => (
-            <div key={image.id} className="image-card">
-                <img src={image.urls.small} alt={image.alt_description} />
-                <div className="image-overlay">
-        <DownloadButton image={image} />
-        <FavButton
-        onToggleFavorite={handleToggleFavorite}
-        image={image}
-        isFavorite={favorites.some((fav) => fav.id === image.id)}
-        />
-        </div>
-    </div>
-))}
-</div>
-
-
-    </div>
-);
-};
-

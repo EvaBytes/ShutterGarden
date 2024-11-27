@@ -1,6 +1,5 @@
 import React from "react";
-import heartIcon from "../../assets/heartPhone.png";
-import "./FavButton.css";
+import heartIcon from "../../assets/iconFAV.png";
 
 export const FavButton = ({ onToggleFavorite, image, isFavorite }) => {
   const handleClick = () => {
