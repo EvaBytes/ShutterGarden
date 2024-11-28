@@ -3,17 +3,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchImages } from "../../features/unsplashSlice";
 import { DownloadButton } from "../../components/Buttons/DownloadButton.jsx";
 import { FavButton } from "../../components/Buttons/FavButton.jsx";
+import { useNavigate } from "react-router-dom"; 
 import search from "../../assets/searchSMALL.png";
 import heartPhoneIcon from "../../assets/heartPhone.png";
 import "./HomePage.css";
 
 export const HomePage = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { images, loading, error } = useSelector((state) => state.unsplash);
     const [searchQuery, setSearchQuery] = useState("");
     const [favorites, setFavorites] = useState([]);
-    const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
-    const [selectedImageId, setSelectedImageId] = useState(null); 
+    const [selectedImageId, setSelectedImageId] = useState(null);
 
     useEffect(() => {
         const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -42,25 +43,18 @@ export const HomePage = () => {
         setSelectedImageId((prev) => (prev === imageId ? null : imageId));
     };
 
-    const displayedImages = showFavoritesOnly
-        ? images.filter((image) =>
-            favorites.some((fav) => fav.id === image.id)
-    )
-        : images;
-
     return (
         <div className="homepage">
             <header className="homepage-header">
                 <button
                     className="favorites-button"
-                    onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
+                    onClick={() => navigate("/favorites")} 
                 >
                     <img
                         className="favorites-icon"
-                        src={heartPhoneIcon} 
+                        src={heartPhoneIcon}
                         alt="Go to Favorites"
-        />
-
+                    />
                 </button>
             </header>
 
@@ -81,13 +75,13 @@ export const HomePage = () => {
             {error && <p className="error-message">Error: {error}</p>}
 
             <div className="image-gallery">
-                {displayedImages.map((image) => (
+                {images.map((image) => (
                     <div
                         key={image.id}
                         className={`image-card ${
                             selectedImageId === image.id ? "selected" : ""
                         }`}
-                        onClick={() => handleImageClick(image.id)}
+                        onClick={() => handleImageClick(image.id)} 
                     >
                         <img src={image.urls.small} alt={image.alt_description} />
                         <div
