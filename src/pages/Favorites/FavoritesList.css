@@ -1,8 +1,12 @@
 .favorites-list {
     padding: 2rem;
     text-align: center;
-    background-color: rgb(214, 239, 199); 
-    min-height: 100vh;
+    background-color: white; 
+    margin-top: 5rem;
+    margin-right: 3rem;
+    margin-left: 3rem;
+    color: rgb(214, 239, 199);
+    border-radius: 5%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,24 +26,18 @@
     position: absolute; 
     top: 2rem;
     right: 1rem;
-    background: none;
+    background: white;
+    padding: .5rem;
+    margin-bottom: 1rem;
+    border-radius: 5%;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    z-index: 1000;
 }
 
-.return-home-button img {
-    width: 2rem;
-    height: 2rem;
-    transition: transform 0.2s ease;
-}
-
-.return-home-button:hover img {
-    transform: scale(1.1);
-}
 .filter-bar {
     display: flex;
     justify-content: center;
@@ -110,7 +108,7 @@
 
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (min-width: 100px) {
     .filter-bar {
         flex-wrap: wrap;
         gap: 0.5rem;
@@ -124,4 +122,11 @@
     .image-card img {
         height: 8rem;
     }
+
+    .favorites-list {
+        padding: 6rem;
+
+    }
+
+
 }
