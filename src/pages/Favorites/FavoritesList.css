@@ -108,7 +108,7 @@
 
 
 
-@media only screen and (min-width: 100px) {
+@media only screen and (min-width: 1000px) {
     .filter-bar {
         flex-wrap: wrap;
         gap: 0.5rem;
