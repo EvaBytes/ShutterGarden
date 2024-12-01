@@ -34,7 +34,7 @@ export default function Layout() {
   const homePageElement = (
     <HomePage
       accessKey={unsplashAccessKey}
-      deleteButton={<DeleteButton />}
+      //deleteButton={<DeleteButton />}
       downloadButton={<DownloadButton />}
       favButton={<FavButton />}
       gallery={<Gallery />}
