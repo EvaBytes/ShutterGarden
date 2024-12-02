@@ -12,6 +12,10 @@
     align-items: center;
     gap: 2rem;
 }
+.favorites-background {
+    background-color: transparent;
+}
+
 .favorites-header {
     display: flex;
     justify-content: space-between;
