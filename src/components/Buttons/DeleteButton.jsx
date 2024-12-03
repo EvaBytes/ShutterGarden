@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import "./DeleteButton.css";
 
 export const DeleteButton = () => {
   const [isDeleted, setIsDeleted] = useState(false);

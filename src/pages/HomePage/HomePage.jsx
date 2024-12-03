@@ -55,7 +55,10 @@ export const HomePage = () => {
                         src={heartPhoneIcon}
                         alt="Go to Favorites"
                     />
+                    <span className="favorites-text">Favorites ❤ </span>
+
                 </button>
+                
             </header>
 
             <form className="search-bar" onSubmit={handleSearch}>
