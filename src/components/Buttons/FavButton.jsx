@@ -7,7 +7,11 @@ export const FavButton = ({ onToggleFavorite, image, isFavorite }) => {
   };
 
   return (
-    <button className="fav-button" onClick={handleClick} aria-label="Favorite">
+    <button
+      className={`fav-button ${isFavorite ? "selected" : ""}`} 
+      onClick={handleClick}
+      aria-label="Favorite"
+    >
       <img src={heartIcon} alt="Favorite Icon" />
     </button>
   );

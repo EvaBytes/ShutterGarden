@@ -25,10 +25,18 @@ export const FavoritesList = () => {
             <img src={ReturnPhoneIcon} alt="Return to HomePage" />
           </button>
         </header>
-        <img className="favorites-background" src={BackgroundFavorites} alt="Heart Background"/>
+        
+        <div className="favorites-content">
+        <img
+        className="favorites-background"
+        src={BackgroundFavorites}
+        alt="Heart Background"
+        />
         <h2>Collect and view your favorite images here.</h2>
         <p>Tap the heart on any image to add it to your favorites. All your favorite images will appear here.</p>
+        </div>
       </div>
+
     );
   }
 
