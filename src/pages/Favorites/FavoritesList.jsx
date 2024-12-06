@@ -60,7 +60,13 @@ export const FavoritesList = () => {
                     onClick={handleReturnToHome}
                     aria-label="Return to Home Page"
                 >
-                    <img src={ReturnHomeIcon} alt="Return to HomePage" />
+                
+                <span className="return-homepage">Homepage </span>
+                    <img 
+                    src={ReturnHomeIcon} 
+                    alt="Return to HomePage" 
+                    />
+
                 </button>
             </header>
 

@@ -1,3 +1,58 @@
+.return-homepage{
+    display: none;
+    
+}
+
+.return-home-button {
+    position: fixed; 
+    top: 1.6rem; 
+    right: 1.5rem;
+    width: 2.4rem;
+    height: 2.2rem; 
+    background-color: #fff;
+    border: none;
+    border-radius: 7px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    z-index: 1000; 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+.return-home-button:hover {
+    background-color: rgb(241, 241, 241); 
+    transform: scale(1.1); 
+}
+
+.return-home-button:focus {
+    outline: none; 
+}
+
+.return-home-button img {
+    width: 1.6rem; 
+    height: auto; 
+    transition: transform 0.2s ease; 
+}
+
+.return-home-button:hover img {
+    transform: scale(1.1); 
+}
+
+@media only screen and (min-width: 1000px) {
+    .return-home-button {
+        border-radius: 8px;
+        width: 7rem;
+        height: 2.3rem;
+        right: 2.5rem;
+    }
+
+    .return-home-button img {
+        width: 1.9rem;
+    }
+}
+
+
 .favorites-list {
     text-align: center;
     background-color: white; 
@@ -29,22 +84,6 @@
     padding: 1rem 2rem; 
     border-radius: 10px;
     font-size: .9rem;
-}
-
-.return-home-button {
-    position: absolute; 
-    top: 1.5rem;
-    right: 1.5rem;
-    background: white;
-    padding: .4rem;
-    margin-bottom: 1rem;
-    border-radius: 12%;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
 }
 
 .return-home-button img {
@@ -84,7 +123,6 @@
     background-color: rgb(241, 241, 241);
 }
 
-
 .empty-favorites {
     text-align: center;
     color: rgb(85, 85, 85);
@@ -109,7 +147,6 @@
     color: #666;
     margin: 0;
 }
-
 
 .favorites-gallery {
     display: grid;
@@ -156,6 +193,12 @@
 
 @media only screen and (min-width: 1000px) {
 
+    .return-homepage{
+        display: flex;
+        font-weight:bold;
+        
+    }
+
     .favorites-list {
         margin-right: 3rem;
         margin-left: 3rem;
@@ -198,14 +241,24 @@
     }
 
     .return-home-button {
-        right:3.5rem;
-        top:1.3rem;
+        border-radius: 8px;
+        width: 7rem;
+        height: 2.3rem;
+        right: 2.5rem;
     }
 
+    .return-homepage{
+        display: inline;
+        font-size:larger;
+        font-weight: 500;
+        color: rgb(92, 130, 56);
+    }
 
-.return-home-button img {
-    width: 1.9rem;
-}
+    .return-home-button img {
+        width: 1.2rem;
+        height: 1.3rem;
+        margin-left: .5rem ;
+    }
 
 
 }
