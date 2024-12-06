@@ -4,11 +4,13 @@ import { DownloadButton } from "../../components/Buttons/DownloadButton.jsx";
 import { DeleteButton } from "../../components/Buttons/DeleteButton.jsx";
 import ReturnHomeIcon from "../../assets/ReturnHome.png";
 import BackgroundFavorites from "../../assets/favoriteBG.png";
+import EditText from "../../assets/EditText.png";
 import "./FavoritesList.css";
 
 export const FavoritesList = () => {
     const navigate = useNavigate();
     const [favorites, setFavorites] = useState([]);
+    const [editingImageId, setEditingImageId] = useState(null);
     const [selectedImageId, setSelectedImageId] = useState(null);
 
     useEffect(() => {
@@ -52,6 +54,10 @@ export const FavoritesList = () => {
         );
     };
 
+    const toggleEditing = (imageId) => {
+        setEditingImageId((prev) => (prev === imageId ? null : imageId));
+    };
+
     return (
         <div className="favorites-list">
             <header className="favorites-header">
@@ -60,13 +66,8 @@ export const FavoritesList = () => {
                     onClick={handleReturnToHome}
                     aria-label="Return to Home Page"
                 >
-                
-                <span className="return-homepage">Homepage </span>
-                    <img 
-                    src={ReturnHomeIcon} 
-                    alt="Return to HomePage" 
-                    />
-
+                    <span className="return-homepage">Homepage </span>
+                    <img src={ReturnHomeIcon} alt="Return to HomePage" />
                 </button>
             </header>
 
@@ -105,18 +106,33 @@ export const FavoritesList = () => {
                                 </div>
                             )}
                             <div className="description-container">
-                                <input
-                                    type="text"
-                                    value={image.alt_description || ""}
-                                    onChange={(e) =>
-                                        handleDescriptionChange(image.id, e.target.value)
-                                    }
-                                    placeholder="Add a description..."
-                                />
+                                {editingImageId === image.id ? (
+                                    <input
+                                        type="text"
+                                        value={image.alt_description || ""}
+                                        onChange={(e) =>
+                                            handleDescriptionChange(image.id, e.target.value)
+                                        }
+                                        placeholder="Add a description..."
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <p>{image.alt_description || "No description added"}</p>
+                                )}
+                                <button
+                                    className="edit-button"
+                                    onClick={(e) => {
+                                        e.stopPropagation(); 
+                                        toggleEditing(image.id);
+                                    }}
+                                >
+                                    <img src={EditText} alt="Edit Description" />
+                                </button>
                             </div>
                         </div>
                     ))}
                 </div>
+
             )}
         </div>
     );

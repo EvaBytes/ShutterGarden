@@ -1,5 +1,4 @@
 import {React} from "react";
-import "./Gallery.css";
 
 export const Gallery = ({ images, downloadButton, favButton }) => (
   <div className="gallery">

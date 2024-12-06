@@ -131,11 +131,11 @@
 
 .favorites-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-    gap: 1rem;
-    justify-content: center;
-    padding: 1rem;
-    max-width: 1200px;
+    grid-template-rows: repeat(auto-fit, minmax(6.375rem, 1fr));
+    gap: 0.5rem; 
+    justify-content: center; 
+    padding: 2rem; 
+    max-width: 1200px; 
     margin: 0 auto;
 }
 
@@ -159,11 +159,23 @@
     width: 100%;
     background-color: rgba(255, 255, 255, 0.6); 
     color: rgb(0, 0, 0);
-    padding: 5px 10px;
+    padding: .7rem 1rem;
     box-sizing: border-box;
     text-align: center;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+}
+
+.description-container p {
+    margin: 0;
+    flex: 1; 
+    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.2rem; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-height: 1.2rem; 
 }
 
 .description-container input {
@@ -172,8 +184,8 @@
     border: none;
     color: rgb(0, 0, 0);
     outline: none;
-    text-align: center;
-    font-size: .8rem;
+    text-align: left;
+    font-size: 0.8rem;
     padding: 5px 0;
 }
 
@@ -201,6 +213,31 @@
     padding: 0;
     margin: 0;
 }
+
+.edit-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-button img {
+    width: 1rem; 
+    height: 1.2rem;
+    object-fit: contain;
+    left: .5rem;
+}
+
 
 @media only screen and (min-width: 1000px) {
     .return-homepage {
@@ -247,11 +284,34 @@
     }
 
     .favorites-gallery {
-        grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-        gap: 0.75rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 1rem; 
     }
 
-    .image-card img {
-        height: 8rem;
+    .description-container {
+        padding: 15px;
+        font-size: 1rem; 
+        justify-content: space-between;
+    }
+
+    .description-container p {
+        font-size: 1rem; 
+    }
+
+    .description-container input {
+        font-size: 1rem; 
+    }
+
+    .edit-button {
+        bottom: 10px; 
+        right: 10px; 
+        padding: 0.6rem; 
+    }
+
+    .edit-button img {
+        width: 1.2rem;
+        height: 1.2rem;
     }
 }
+
