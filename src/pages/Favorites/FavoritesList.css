@@ -2,9 +2,9 @@
     text-align: center;
     background-color: white; 
     margin-top: 6rem;
-    margin-right: 2.5rem;
-    margin-left: 2.5rem;
-    margin-bottom: 4rem;
+    margin-right: 2rem;
+    margin-left: 2rem;
+    margin-bottom: 3rem;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -13,20 +13,22 @@
 }
 
 .favorites-background {
+    padding-top:7rem;
+    padding-bottom: 7rem;
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 .text-overlay {
     position: absolute;
-    top: 50%; 
-    transform: translate( -18%); 
+    top: 35%; 
+    left: 1.5%;
     color: rgb(110, 132, 44);
     text-align: center;
     background: transparent; 
     padding: 1rem 2rem; 
     border-radius: 10px;
-    font-size: 1.2rem;
+    font-size: .9rem;
 }
 
 .return-home-button {
@@ -116,6 +118,20 @@
 
 
 @media only screen and (min-width: 1000px) {
+
+    .text-overlay {
+        position: absolute;
+        top: 50%;
+        left: 30%; 
+        transform: translate( -18%); 
+        color: rgb(110, 132, 44);
+        text-align: center;
+        background: transparent; 
+        padding: 1rem 2rem; 
+        border-radius: 10px;
+        font-size: 1.2rem;
+    }
+    
     .filter-bar {
         flex-wrap: wrap;
         gap: 0.5rem;
