@@ -1,78 +1,117 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DownloadButton } from "../../components/Buttons/DownloadButton.jsx";
+import { DeleteButton } from "../../components/Buttons/DeleteButton.jsx";
 import ReturnHomeIcon from "../../assets/ReturnHome.png";
 import BackgroundFavorites from "../../assets/favoriteBG.png";
 import "./FavoritesList.css";
 
 export const FavoritesList = () => {
-  const navigate = useNavigate();
-  const [favorites, setFavorites] = useState([]);
+    const navigate = useNavigate();
+    const [favorites, setFavorites] = useState([]);
+    const [selectedImageId, setSelectedImageId] = useState(null);
 
-  useEffect(() => {
-    const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(savedFavorites);
-  }, []);
+    useEffect(() => {
+        try {
+            const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+            setFavorites(savedFavorites);
+        } catch (error) {
+            console.error("Error parsing favorites from localStorage:", error);
+            setFavorites([]);
+        }
+    }, []);
 
-  const handleReturnToHome = () => {
-    navigate("/");
-  };
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            localStorage.setItem("favorites", JSON.stringify(favorites));
+        }, 500);
 
-  const getFilteredFavorites = () => {
-    if (filter === "all") return favorites;
+        return () => clearTimeout(timeout);
+    }, [favorites]);
 
-    const sortedFavorites = [...favorites];
+    const handleReturnToHome = () => {
+        navigate("/");
+    };
 
-    switch (filter) {
-      case "date":
-        return sortedFavorites.sort((a, b) => new Date(b.date) - new Date(a.date));
-      case "width":
-        return sortedFavorites.sort((a, b) => b.width - a.width);
-      case "height":
-        return sortedFavorites.sort((a, b) => b.height - a.height);
-      case "likes":
-        return sortedFavorites.sort((a, b) => b.likes - a.likes);
-      default:
-        return favorites;
-    }
-  };
+    const handleDelete = (imageId) => {
+        setFavorites((prev) => prev.filter((image) => image.id !== imageId));
+    };
 
+    const handleDescriptionChange = (imageId, newDescription) => {
+        if (typeof newDescription !== "string") {
+            console.error("Description must be a string.");
+            return;
+        }
 
-  return (
-    <div className="favorites-list">
-      <header className="favorites-header">
-        <button className="return-home-button" onClick={handleReturnToHome}>
-          <img src={ReturnHomeIcon} alt="Return to HomePage" />
-        </button>
-      </header>
+        setFavorites((prev) =>
+            prev.map((image) =>
+                image.id === imageId
+                    ? { ...image, alt_description: newDescription.trim() || image.alt_description }
+                    : image
+            )
+        );
+    };
 
-      {!favorites || favorites.length === 0 ? (
-        <div className="overlay-container">
-          <img
-            className="favorites-background"
-            src={BackgroundFavorites}
-            alt="Heart Background"
-          />
-          <div className="text-overlay">
-            <h2>Collect and view your favorite images here.</h2>
-            <p>Tap the heart on any image to add it to your favorites. All your favorite images will appear here.</p>
-          </div>
+    return (
+        <div className="favorites-list">
+            <header className="favorites-header">
+                <button
+                    className="return-home-button"
+                    onClick={handleReturnToHome}
+                    aria-label="Return to Home Page"
+                >
+                    <img src={ReturnHomeIcon} alt="Return to HomePage" />
+                </button>
+            </header>
+
+            {!favorites || favorites.length === 0 ? (
+                <div className="overlay-container">
+                    <img
+                        className="favorites-background"
+                        src={BackgroundFavorites}
+                        alt="Heart Background"
+                    />
+                    <div className="text-overlay">
+                        <h2>Collect and view your favorite images here.</h2>
+                        <p>
+                            Tap the heart on any image to add it to your favorites. All your
+                            favorite images will appear here.
+                        </p>
+                    </div>
+                </div>
+            ) : (
+                <div className="favorites-gallery">
+                    {favorites.map((image) => (
+                        <div
+                            key={image.id}
+                            className={`image-card ${
+                                selectedImageId === image.id ? "selected" : ""
+                            }`}
+                            onClick={() =>
+                                setSelectedImageId((prev) => (prev === image.id ? null : image.id))
+                            }
+                        >
+                            <img src={image.urls.small} alt={image.alt_description} />
+                            {selectedImageId === image.id && (
+                                <div className="image-overlay visible">
+                                    <DownloadButton image={image} />
+                                    <DeleteButton onDelete={() => handleDelete(image.id)} />
+                                </div>
+                            )}
+                            <div className="description-container">
+                                <input
+                                    type="text"
+                                    value={image.alt_description || ""}
+                                    onChange={(e) =>
+                                        handleDescriptionChange(image.id, e.target.value)
+                                    }
+                                    placeholder="Add a description..."
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
-      ) : (
-
-        <>
-          <div className="filter-bar">
-            {/* Agrega aquí los filtros si son necesarios */}
-          </div>
-
-          <div className="favorites-gallery">
-            {favorites.map((image) => (
-              <div key={image.id} className="image-card">
-                <img src={image.urls.small} alt={image.alt_description} />
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
+    );
 };

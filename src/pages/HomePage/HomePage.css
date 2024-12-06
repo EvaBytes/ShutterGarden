@@ -9,7 +9,7 @@
     justify-content: center;
     align-items: center;
     margin: 4rem auto 1.25rem;
-    padding: 0.4rem 1.2rem; 
+    padding: .4rem 1.2rem; 
     background-color: #fff;
     border-radius: 1.9rem; 
     width: 85%;
@@ -20,9 +20,9 @@
     flex: 1;
     border: none;
     outline: none;
-    padding: 0.3rem; 
+    padding: .3rem; 
     border-radius: 1.9rem; 
-    font-size: 0.8rem; 
+    font-size: .8rem; 
     color: rgb(92, 130, 56);
 }
 
@@ -36,26 +36,26 @@
     border: none;
     cursor: pointer;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items:center;
+    justify-content: end;
 }
 
 .search-bar button img {
-    width: 1.8rem; 
-    height: 1.8rem; 
+    width: 2rem; 
+    height: 2rem; 
 }
 
 .image-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(9.375rem, 1fr));
-    gap: 0.5rem;
+    gap: .5rem;
     grid-auto-rows: 8rem;
 }
 
 .image-card {
     position: relative; 
     overflow: hidden;
-    border-radius: 0.6rem;
+    border-radius: .6rem;
     cursor: pointer;
 }
 
@@ -75,21 +75,21 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-end; 
-    padding: 0.5rem;
+    padding: .5rem;
     opacity: 0;
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.405);
     transition: opacity 0.3s ease;
 }
 
 .favorites-button {
     position: fixed; 
-    top: 1.5rem; 
+    top: 1.6rem; 
     right: 1.5rem;
     width: 2.4rem;
-    height: 2.4rem; 
+    height: 2.2rem; 
     background-color: #fff;
     border: none;
-    border-radius: 10%; 
+    border-radius: 7px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -113,7 +113,7 @@
 
 .favorites-button img {
     width: .9rem;
-    height: 0.9rem;
+    height: .8rem;
 }
 
 
@@ -153,8 +153,8 @@
 
 .image-overlay .download-button {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: .5rem;
+    right: .5rem;
 }
 
 .image-overlay .fav-button {

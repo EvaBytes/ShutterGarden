@@ -1,21 +1,21 @@
-import React, {useState} from "react";
+import React from "react";
+import DeleteFavorites from "../../assets/Trash.png";
 
-export const DeleteButton = () => {
-  const [isDeleted, setIsDeleted] = useState(false);
+export const DeleteButton = ({ onDelete }) => {
+    const handleClick = (e) => {
+        e.stopPropagation(); 
+        if (onDelete && typeof onDelete === "function") {
+            onDelete();
+        }
+    };
 
-  const handleClick = () => {
-    console.log("Delete action triggered.");
-    setIsDeleted(true);
-  };
-
-  if (isDeleted) {
-    return <p>Image deleted</p>;
-  }
-
-  return (
-    <button className="delete-button" onClick={handleClick} aria-label="Delete Image">
-      Delete
-    </button>
-  );
+    return (
+        <button
+            className="delete-button"
+            onClick={handleClick}
+            aria-label="Delete Image"
+        >
+            <img src={DeleteFavorites} alt="Delete image" />
+        </button>
+    );
 };
-
