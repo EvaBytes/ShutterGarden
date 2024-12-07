@@ -10,8 +10,10 @@ import "./FavoritesList.css";
 export const FavoritesList = () => {
     const navigate = useNavigate();
     const [favorites, setFavorites] = useState([]);
-    const [editingImageId, setEditingImageId] = useState(null);
     const [selectedImageId, setSelectedImageId] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalImage, setModalImage] = useState(null);
+    const [modalDescription, setModalDescription] = useState("");
 
     useEffect(() => {
         try {
@@ -39,23 +41,27 @@ export const FavoritesList = () => {
         setFavorites((prev) => prev.filter((image) => image.id !== imageId));
     };
 
-    const handleDescriptionChange = (imageId, newDescription) => {
-        if (typeof newDescription !== "string") {
-            console.error("Description must be a string.");
-            return;
-        }
+    const openModal = (image) => {
+        setModalImage(image);
+        setModalDescription(image.alt_description || "");
+        setIsModalOpen(true);
+    };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setModalImage(null);
+        setModalDescription("");
+    };
+
+    const saveDescription = () => {
         setFavorites((prev) =>
             prev.map((image) =>
-                image.id === imageId
-                    ? { ...image, alt_description: newDescription.trim() || image.alt_description }
+                image.id === modalImage.id
+                    ? { ...image, alt_description: modalDescription }
                     : image
             )
         );
-    };
-
-    const toggleEditing = (imageId) => {
-        setEditingImageId((prev) => (prev === imageId ? null : imageId));
+        closeModal();
     };
 
     return (
@@ -106,24 +112,12 @@ export const FavoritesList = () => {
                                 </div>
                             )}
                             <div className="description-container">
-                                {editingImageId === image.id ? (
-                                    <input
-                                        type="text"
-                                        value={image.alt_description || ""}
-                                        onChange={(e) =>
-                                            handleDescriptionChange(image.id, e.target.value)
-                                        }
-                                        placeholder="Add a description..."
-                                        autoFocus
-                                    />
-                                ) : (
-                                    <p>{image.alt_description || "No description added"}</p>
-                                )}
+                                <p>{image.alt_description || "No description added"}</p>
                                 <button
                                     className="edit-button"
                                     onClick={(e) => {
-                                        e.stopPropagation(); 
-                                        toggleEditing(image.id);
+                                        e.stopPropagation();
+                                        openModal(image);
                                     }}
                                 >
                                     <img src={EditText} alt="Edit Description" />
@@ -132,8 +126,34 @@ export const FavoritesList = () => {
                         </div>
                     ))}
                 </div>
-
             )}
+
+            {isModalOpen && (
+                <div className="modal-overlay" onClick={closeModal}>
+                    <div
+                        className="modal-content"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <img 
+                            src={modalImage?.urls.small} 
+                            alt={modalImage?.alt_description || "Image"} 
+                            className="modal-image"
+                        />
+                        <h2>Edit your description</h2>
+                        <input
+                            type="text"
+                            value={modalDescription}
+                            onChange={(e) => setModalDescription(e.target.value)}
+                            placeholder="Add a description..."
+                        />
+                        <div className="modal-actions">
+                            <button onClick={saveDescription}>Save</button>
+                            <button onClick={closeModal}>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };
