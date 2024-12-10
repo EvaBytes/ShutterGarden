@@ -157,6 +157,7 @@
 
 .image-overlay .fav-button {
     margin-bottom: 1rem;
+    z-index: 10;
 }
 
 

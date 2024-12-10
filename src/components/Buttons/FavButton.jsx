@@ -1,7 +1,12 @@
 import React from "react";
-import heartIcon from "../../assets/iconFAV.png";
 
-export const FavButton = ({ onToggleFavorite, image, isFavorite }) => {
+export const FavButton = ({ 
+    onToggleFavorite, 
+    image, 
+    isFavorite, 
+    filledIcon, 
+    emptyIcon 
+}) => {
     const handleClick = () => {
         if (typeof onToggleFavorite !== "function" || !image) {
             console.error("onToggleFavorite must be a function and image must be provided.");
@@ -17,7 +22,7 @@ export const FavButton = ({ onToggleFavorite, image, isFavorite }) => {
             aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
         >
             <img
-                src={heartIcon}
+                src={isFavorite ? filledIcon : emptyIcon}
                 alt={isFavorite ? "Remove from favorites" : "Add to favorites"}
             />
         </button>

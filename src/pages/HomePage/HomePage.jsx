@@ -6,6 +6,8 @@ import { FavButton } from "../../components/Buttons/FavButton.jsx";
 import { useNavigate } from "react-router-dom"; 
 import search from "../../assets/searchSMALL.png";
 import heartPhoneIcon from "../../assets/heartPhone.png";
+import emptyHeart from "../../assets/IconFAV.png";
+import filledHeart from "../../assets/filledHeart.png"
 import "./HomePage.css";
 
 export const HomePage = () => {
@@ -15,12 +17,17 @@ export const HomePage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [favorites, setFavorites] = useState([]);
     const [selectedImageId, setSelectedImageId] = useState(null);
+    const [isInitialLoad, setIsInitialLoad] = useState(true); 
 
     useEffect(() => {
         const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
         setFavorites(savedFavorites);
-        dispatch(fetchImages(""));
-    }, [dispatch]);
+
+        if (isInitialLoad) { 
+            dispatch(fetchImages(""));
+            setIsInitialLoad(false); 
+        }
+    }, [dispatch, isInitialLoad]);
 
     useEffect(() => {
         localStorage.setItem("favorites", JSON.stringify(favorites));
@@ -96,9 +103,9 @@ export const HomePage = () => {
                             <FavButton
                                 onToggleFavorite={handleToggleFavorite}
                                 image={image}
-                                isFavorite={favorites.some(
-                                    (fav) => fav.id === image.id
-                                )}
+                                isFavorite={favorites.some((fav) => fav.id === image.id)}
+                                filledIcon={filledHeart}
+                                emptyIcon={emptyHeart}
                             />
                         </div>
                     </div>
