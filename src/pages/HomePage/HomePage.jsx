@@ -16,22 +16,30 @@ export const HomePage = () => {
     const { images, loading, error } = useSelector((state) => state.unsplash);
     const [searchQuery, setSearchQuery] = useState("");
     const [favorites, setFavorites] = useState([]);
-    const [selectedImageId, setSelectedImageId] = useState(null);
-    const [isInitialLoad, setIsInitialLoad] = useState(true); 
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isImageLoading, setIsImageLoading] = useState(false);
 
     useEffect(() => {
         const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
         setFavorites(savedFavorites);
-
-        if (isInitialLoad) { 
-            dispatch(fetchImages(""));
-            setIsInitialLoad(false); 
-        }
-    }, [dispatch, isInitialLoad]);
+        dispatch(fetchImages(""));
+    }, [dispatch]);
 
     useEffect(() => {
         localStorage.setItem("favorites", JSON.stringify(favorites));
     }, [favorites]);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === "Escape" && isModalOpen) {
+                closeModal();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isModalOpen]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -46,8 +54,19 @@ export const HomePage = () => {
         );
     };
 
-    const handleImageClick = (imageId) => {
-        setSelectedImageId((prev) => (prev === imageId ? null : imageId));
+    const openModal = (image) => {
+        setIsImageLoading(true);
+        setSelectedImage(image);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedImage(null);
+    };
+
+    const handleImageLoaded = () => {
+        setIsImageLoading(false);
     };
 
     return (
@@ -63,9 +82,7 @@ export const HomePage = () => {
                         alt="Go to Favorites"
                     />
                     <span className="favorites-text">Favorites ❤ </span>
-
                 </button>
-                
             </header>
 
             <form className="search-bar" onSubmit={handleSearch}>
@@ -88,17 +105,11 @@ export const HomePage = () => {
                 {images.map((image) => (
                     <div
                         key={image.id}
-                        className={`image-card ${
-                            selectedImageId === image.id ? "selected" : ""
-                        }`}
-                        onClick={() => handleImageClick(image.id)} 
+                        className="image-card"
+                        onClick={() => openModal(image)} 
                     >
                         <img src={image.urls.small} alt={image.alt_description} />
-                        <div
-                            className={`image-overlay ${
-                                selectedImageId === image.id ? "visible" : ""
-                            }`}
-                        >
+                        <div className="image-overlay">
                             <DownloadButton image={image} />
                             <FavButton
                                 onToggleFavorite={handleToggleFavorite}
@@ -111,6 +122,27 @@ export const HomePage = () => {
                     </div>
                 ))}
             </div>
+
+            {isModalOpen && (
+                <div className="modal-overlay" onClick={closeModal}>
+                    <div
+                        className="modal-content"
+                        onClick={(e) => e.stopPropagation()} 
+                    >
+                        {isImageLoading && <p className="loading-spinner">Loading image...</p>}
+                        <img
+                            src={selectedImage?.urls.full}
+                            alt="Selected"
+                            className="modal-image"
+                            onLoad={handleImageLoaded}
+                            style={isImageLoading ? { display: "none" } : {}} 
+                        />
+                        <button className="close-button" onClick={closeModal}>
+                            &times;
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
