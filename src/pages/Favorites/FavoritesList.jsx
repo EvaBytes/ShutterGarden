@@ -14,31 +14,27 @@ export const FavoritesList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalImage, setModalImage] = useState(null);
     const [modalDescription, setModalDescription] = useState("");
+    const [notification, setNotification] = useState(null); 
 
     useEffect(() => {
-        try {
-            const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-            setFavorites(savedFavorites);
-        } catch (error) {
-            console.error("Error parsing favorites from localStorage:", error);
-            setFavorites([]);
-        }
+        const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        setFavorites(savedFavorites);
     }, []);
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            localStorage.setItem("favorites", JSON.stringify(favorites));
-        }, 500);
-
-        return () => clearTimeout(timeout);
-    }, [favorites]);
+    const showNotification = (message) => {
+        setNotification(message);
+        setTimeout(() => setNotification(null), 3000); 
+    };
 
     const handleReturnToHome = () => {
         navigate("/");
     };
 
     const handleDelete = (imageId) => {
-        setFavorites((prev) => prev.filter((image) => image.id !== imageId));
+        const updatedFavorites = favorites.filter((image) => image.id !== imageId);
+        setFavorites(updatedFavorites);
+        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        showNotification("Image removed from favorites.");
     };
 
     const openModal = (image) => {
@@ -54,14 +50,15 @@ export const FavoritesList = () => {
     };
 
     const saveDescription = () => {
-        setFavorites((prev) =>
-            prev.map((image) =>
-                image.id === modalImage.id
-                    ? { ...image, alt_description: modalDescription }
-                    : image
-            )
+        const updatedFavorites = favorites.map((image) =>
+            image.id === modalImage.id
+                ? { ...image, alt_description: modalDescription }
+                : image
         );
+        setFavorites(updatedFavorites);
+        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
         closeModal();
+        showNotification("Description updated successfully.");
     };
 
     return (
@@ -72,7 +69,7 @@ export const FavoritesList = () => {
                     onClick={handleReturnToHome}
                     aria-label="Return to Home Page"
                 >
-                    <span className="return-homepage">Homepage </span>
+                    <span className="return-homepage">Homepage</span>
                     <img src={ReturnHomeIcon} alt="Return to HomePage" />
                 </button>
             </header>
@@ -154,6 +151,11 @@ export const FavoritesList = () => {
                 </div>
             )}
 
+            {notification && (
+                <div className="notification">
+                    {notification}
+                </div>
+            )}
         </div>
     );
 };

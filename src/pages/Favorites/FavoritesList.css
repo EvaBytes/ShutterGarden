@@ -327,6 +327,20 @@
     background-color: rgba(214, 239, 199, 1); 
 }
 
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    animation: fadein 0.3s, fadeout 0.3s 2.7s;
+}
+
 
 @media only screen and (min-width: 1000px) {
     .return-homepage {
