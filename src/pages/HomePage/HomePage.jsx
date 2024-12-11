@@ -110,10 +110,10 @@ export const HomePage = () => {
                     >
                         <img src={image.urls.small} alt={image.alt_description} />
                         <div className="image-overlay">
-                            <div onClick={(e) => e.stopPropagation()}>
+                            <div onClick={(e) => e.stopPropagation()} className="button-container">
                                 <DownloadButton image={image} />
                             </div>
-                            <div onClick={(e) => e.stopPropagation()}>
+                            <div onClick={(e) => e.stopPropagation()} className="button-container">
                                 <FavButton
                                     onToggleFavorite={handleToggleFavorite}
                                     image={image}
