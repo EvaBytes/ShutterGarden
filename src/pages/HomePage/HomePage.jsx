@@ -74,7 +74,7 @@ export const HomePage = () => {
             <header className="homepage-header">
                 <button
                     className="favorites-button"
-                    onClick={() => navigate("/favorites")} 
+                    onClick={() => navigate("/favorites")}
                 >
                     <img
                         className="favorites-icon"
@@ -110,14 +110,18 @@ export const HomePage = () => {
                     >
                         <img src={image.urls.small} alt={image.alt_description} />
                         <div className="image-overlay">
-                            <DownloadButton image={image} />
-                            <FavButton
-                                onToggleFavorite={handleToggleFavorite}
-                                image={image}
-                                isFavorite={favorites.some((fav) => fav.id === image.id)}
-                                filledIcon={filledHeart}
-                                emptyIcon={emptyHeart}
-                            />
+                            <div onClick={(e) => e.stopPropagation()}>
+                                <DownloadButton image={image} />
+                            </div>
+                            <div onClick={(e) => e.stopPropagation()}>
+                                <FavButton
+                                    onToggleFavorite={handleToggleFavorite}
+                                    image={image}
+                                    isFavorite={favorites.some((fav) => fav.id === image.id)}
+                                    filledIcon={filledHeart}
+                                    emptyIcon={emptyHeart}
+                                />
+                            </div>
                         </div>
                     </div>
                 ))}
