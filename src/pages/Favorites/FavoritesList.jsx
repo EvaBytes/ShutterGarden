@@ -95,7 +95,7 @@ export const FavoritesList = () => {
                 <button className="filter-button" onClick={() => setFilter("height")}>Height</button>
                 <button className="filter-button" onClick={() => setFilter("width")}>Width</button>
                 <button className="filter-button" onClick={() => setFilter("likes")}>Likes</button>
-                <button className="filter-button" onClick={() => setFilter("date")}>Date Added</button>
+                <button className="filter-button" onClick={() => setFilter("date")}>Date</button>
             </div>
 
             {!favorites || favorites.length === 0 ? (
