@@ -14,7 +14,8 @@ export const FavoritesList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalImage, setModalImage] = useState(null);
     const [modalDescription, setModalDescription] = useState("");
-    const [notification, setNotification] = useState(null); 
+    const [notification, setNotification] = useState(null);
+    const [filter, setFilter] = useState("all");
 
     useEffect(() => {
         const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -23,7 +24,7 @@ export const FavoritesList = () => {
 
     const showNotification = (message) => {
         setNotification(message);
-        setTimeout(() => setNotification(null), 3000); 
+        setTimeout(() => setNotification(null), 3000);
     };
 
     const handleReturnToHome = () => {
@@ -61,6 +62,21 @@ export const FavoritesList = () => {
         showNotification("Description updated successfully.");
     };
 
+    const filteredFavorites = favorites.filter((image) => {
+        switch (filter) {
+            case "height":
+                return image.height > 1000; 
+            case "width":
+                return image.width > 1000; 
+            case "likes":
+                return image.likes > 100; 
+            case "date":
+                return new Date(image.date_added) > new Date("2023-01-01"); 
+            default:
+                return true;
+        }
+    });
+
     return (
         <div className="favorites-list">
             <header className="favorites-header">
@@ -73,6 +89,14 @@ export const FavoritesList = () => {
                     <img src={ReturnHomeIcon} alt="Return to HomePage" />
                 </button>
             </header>
+
+            <div className="filter-buttons">
+                <button className="filter-button" onClick={() => setFilter("all")}>All</button>
+                <button className="filter-button" onClick={() => setFilter("height")}>Height</button>
+                <button className="filter-button" onClick={() => setFilter("width")}>Width</button>
+                <button className="filter-button" onClick={() => setFilter("likes")}>Likes</button>
+                <button className="filter-button" onClick={() => setFilter("date")}>Date Added</button>
+            </div>
 
             {!favorites || favorites.length === 0 ? (
                 <div className="overlay-container">
@@ -91,7 +115,7 @@ export const FavoritesList = () => {
                 </div>
             ) : (
                 <div className="favorites-gallery">
-                    {favorites.map((image) => (
+                    {filteredFavorites.map((image) => (
                         <div
                             key={image.id}
                             className={`image-card ${
