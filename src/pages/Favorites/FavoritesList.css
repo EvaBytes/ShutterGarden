@@ -377,6 +377,38 @@
     border-bottom-right-radius: 50px;
 }
 
+.sort-order-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: .5rem;
+}
+
+.sort-button {
+    border: 1.5px solid rgb(140, 169, 52);
+    background-color: white;
+    color: rgb(92, 130, 56);
+    font-size: 0.75rem;
+    padding: 0.25rem 1rem;
+    border-radius: 50px; 
+    cursor: pointer;
+    font-weight: normal;
+    transition: background-color 0.3s ease, font-weight 0.3s ease, color 0.3s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+.sort-button.active {
+    background-color: rgb(230, 230, 230); 
+    font-weight: bold;
+    color: rgb(51, 51, 51);
+}
+
+.sort-button:hover {
+    background-color: rgb(240, 240, 240); 
+    color: rgb(51, 51, 51);
+}
+
+
 
 @media only screen and (min-width: 1000px) {
     .return-homepage {

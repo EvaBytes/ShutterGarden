@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import search from "../../assets/searchSMALL.png";
 import heartPhoneIcon from "../../assets/heartPhone.png";
 import emptyHeart from "../../assets/IconFAV.png";
-import filledHeart from "../../assets/filledHeart.png"
+import filledHeart from "../../assets/filledHeart.png";
 import "./HomePage.css";
 
 export const HomePage = () => {
@@ -129,17 +129,18 @@ export const HomePage = () => {
 
             {isModalOpen && (
                 <div className="modal-overlay" onClick={closeModal}>
-                    <div
-                        className="modal-content"
-                        onClick={(e) => e.stopPropagation()} 
-                    >
-                        {isImageLoading && <p className="loading-spinner">Loading image...</p>}
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        {isImageLoading && (
+                            <p className="loading-spinner">Loading image...</p>
+                        )}
                         <img
                             src={selectedImage?.urls.full}
                             alt="Selected"
                             className="modal-image"
                             onLoad={handleImageLoaded}
-                            style={isImageLoading ? { display: "none" } : {}} 
+                            style={{
+                                display: isImageLoading ? "none" : "block", 
+                            }}
                         />
                         <button className="close-button" onClick={closeModal}>
                             &times;
