@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DownloadButton } from '../../components/Buttons/DownloadButton.jsx';
 import { DeleteButton } from '../../components/Buttons/DeleteButton.jsx';
+import { FaSortUp, FaSortDown } from 'react-icons/fa';
 import ReturnHomeIcon from '../../assets/ReturnHome.png';
 import BackgroundFavorites from '../../assets/favoriteBG.png';
 import EditText from '../../assets/EditText.png';
+import { Footer } from '../../components/Footer/Footer.jsx';
 import './FavoritesList.css';
 
 export const FavoritesList = () => {
@@ -16,7 +18,12 @@ export const FavoritesList = () => {
     const [modalDescription, setModalDescription] = useState("");
     const [notification, setNotification] = useState(null);
     const [filter, setFilter] = useState('all');
-    const [sortOrder, setSortOrder] = useState("ascending");
+    const [sortOrders, setSortOrders] = useState({
+        height: 'descending',
+        width: 'descending',
+        likes: 'descending',
+        date: 'descending',
+    });
 
     useEffect(() => {
         const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -63,34 +70,21 @@ export const FavoritesList = () => {
         showNotification("Description updated successfully.");
     };
 
-    const filterAndSortFavorites = (favorites, filter, sortOrder) => {
-        let filtered = favorites;
+    const toggleSortOrder = (key) => {
+        setSortOrders((prev) => ({
+            ...prev,
+            [key]: prev[key] === 'ascending' ? 'descending' : 'ascending',
+        }));
+    };
 
-        switch (filter) {
-            case "height":
-                filtered = favorites.sort((a, b) =>
-                    sortOrder === "ascending" ? a.height - b.height : b.height - a.height
-                );
-                break;
-            case "width":
-                filtered = favorites.sort((a, b) =>
-                    sortOrder === "ascending" ? a.width - b.width : b.width - a.width
-                );
-                break;
-            case "likes":
-                filtered = favorites.sort((a, b) =>
-                    sortOrder === "ascending" ? a.likes - b.likes : b.likes - a.likes
-                );
-                break;
-            case "date":
-                filtered = favorites.sort((a, b) =>
-                    sortOrder === "ascending"
-                        ? new Date(a.date_added) - new Date(b.date_added)
-                        : new Date(b.date_added) - new Date(a.date_added)
-                );
-                break;
-            default:
-                filtered = favorites; 
+    const filterAndSortFavorites = (favorites, filter, sortOrders) => {
+        let filtered = [...favorites];
+
+        if (filter !== 'all') {
+            filtered.sort((a, b) => {
+                const order = sortOrders[filter] === 'ascending' ? 1 : -1;
+                return (a[filter] - b[filter]) * order;
+            });
         }
 
         return filtered;
@@ -99,7 +93,7 @@ export const FavoritesList = () => {
     const sortedAndFilteredFavorites = filterAndSortFavorites(
         favorites,
         filter,
-        sortOrder
+        sortOrders
     );
 
     return (
@@ -116,27 +110,32 @@ export const FavoritesList = () => {
             </header>
 
             <div className="filter-buttons">
-                <button className="filter-button" onClick={() => setFilter("all")}>All</button>
-                <button className="filter-button" onClick={() => setFilter("height")}>Height</button>
-                <button className="filter-button" onClick={() => setFilter("width")}>Width</button>
-                <button className="filter-button" onClick={() => setFilter("likes")}>Likes</button>
-                <button className="filter-button" onClick={() => setFilter("date")}>Date</button>
-
-                <div className="sort-order-controls">
-                    <label>Sort Order:</label>
+                {['height', 'width', 'likes', 'date'].map((key) => (
                     <button
-                        className={`sort-button ${sortOrder === "ascending" ? "active" : ""}`}
-                        onClick={() => setSortOrder("ascending")}
+                        key={key}
+                        className={`filter-button ${filter === key ? 'active' : ''}`}
+                        onClick={() => setFilter(key)}
                     >
-                        <span>↑</span>
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                        {sortOrders[key] === 'ascending' ? (
+                            <FaSortUp
+                                className="sort-icon"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleSortOrder(key);
+                                }}
+                            />
+                        ) : (
+                            <FaSortDown
+                                className="sort-icon"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleSortOrder(key);
+                                }}
+                            />
+                        )}
                     </button>
-                    <button
-                        className={`sort-button ${sortOrder === "descending" ? "active" : ""}`}
-                        onClick={() => setSortOrder("descending")}
-                    >
-                        <span>↓</span>
-                    </button>
-                </div>
+                ))}
             </div>
 
             {!favorites || favorites.length === 0 ? (
@@ -160,7 +159,7 @@ export const FavoritesList = () => {
                         <div
                             key={image.id}
                             className={`image-card ${
-                                selectedImageId === image.id ? "selected" : ""
+                                selectedImageId === image.id ? 'selected' : ''
                             }`}
                             onClick={() =>
                                 setSelectedImageId((prev) => (prev === image.id ? null : image.id))
@@ -221,6 +220,7 @@ export const FavoritesList = () => {
                     {notification}
                 </div>
             )}
+
         </div>
     );
 };

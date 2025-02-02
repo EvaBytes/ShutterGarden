@@ -9,6 +9,7 @@ import {DownloadButton} from './components/Buttons/DownloadButton.jsx';
 import {FavButton} from './components/Buttons/FavButton.jsx';
 import { FilterFavorite } from './components/Buttons/FilterFavorite.jsx';
 import {Gallery} from './components/Gallery/Gallery.jsx';
+import { Footer } from './components/Footer/Footer.jsx';
 import logo from './assets/ShutterGarden.png';
 import './Layout.css';
 
@@ -20,13 +21,13 @@ const Header = () => (
   </header>
 );
 
-
 const MainLayout = () => (
   <>
     <Header />
-    <main>
+    <main className="main-content">
       <Outlet /> 
     </main>
+    <Footer />
   </>
 );
 
@@ -34,7 +35,6 @@ export default function Layout() {
   const homePageElement = (
     <HomePage
       accessKey={unsplashAccessKey}
-      //deleteButton={<DeleteButton />}
       downloadButton={<DownloadButton />}
       favButton={<FavButton />}
       gallery={<Gallery />}
@@ -62,4 +62,3 @@ export default function Layout() {
     </Provider>
   );
 }
-

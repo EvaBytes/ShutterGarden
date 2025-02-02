@@ -1,9 +1,32 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 # ShutterGarden
+ShutterGarden is a modern React-based photo gallery application that integrates with the Unsplash API to provide users with a seamless browsing and favoriting experience. Users can explore images, mark their favorites, and manage their gallery efficiently.
+
+🚀 Features:
+
+- Browse images fetched from the Unsplash API.
+
+- Add images to a favorites list.
+
+- Download images.
+
+- Delete images from favorites.
+
+- Filter favorite images.
+
+- Responsive design.
+
+---
+
+🛠️ Technologies Used:
+
+- React
+
+- React Router
+
+- Redux Toolkit
+
+- Unsplash API
+
+- Vite
+
+- CSS Modules

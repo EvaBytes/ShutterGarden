@@ -5,8 +5,8 @@ import {unsplashReducer} from '../features/unsplashSlice.js';
 
 export const store = configureStore({
   reducer: {
-    favorites: favoriteReducer,
     home: homeReducer,
+    favorites: favoriteReducer,
     unsplash: unsplashReducer,
   },
 });
