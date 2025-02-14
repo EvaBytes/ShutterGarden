@@ -1,7 +1,7 @@
 # ShutterGarden
 ShutterGarden is a modern React-based photo gallery application that integrates with the Unsplash API to provide users with a seamless browsing and favoriting experience. Users can explore images, mark their favorites, and manage their gallery efficiently.
 
-🚀 Features:
+🚀 **Features:**
 
 - Browse images fetched from the Unsplash API.
 
@@ -17,7 +17,7 @@ ShutterGarden is a modern React-based photo gallery application that integrates 
 
 ---
 
-🛠️ Technologies Used:
+🛠️ **Technologies Used:**
 
 - React
 
