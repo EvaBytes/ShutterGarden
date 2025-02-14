@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { DownloadButton } from '../../components/Buttons/DownloadButton.jsx';
-import { DeleteButton } from '../../components/Buttons/DeleteButton.jsx';
-import { FaSortUp, FaSortDown } from 'react-icons/fa';
-import ReturnHomeIcon from '../../assets/ReturnHome.png';
-import BackgroundFavorites from '../../assets/favoriteBG.png';
-import EditText from '../../assets/EditText.png';
-import { Footer } from '../../components/Footer/Footer.jsx';
-import './FavoritesList.css';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { DownloadButton } from "../../components/Buttons/DownloadButton.jsx";
+import { DeleteButton } from "../../components/Buttons/DeleteButton.jsx";
+import { FaSortUp, FaSortDown } from "react-icons/fa";
+import ReturnHomeIcon from "../../assets/ReturnHome.png";
+import BackgroundFavorites from "../../assets/favoriteBG.png";
+import EditText from "../../assets/EditText.png";
+import "./FavoritesList.css";
 
 export const FavoritesList = () => {
     const navigate = useNavigate();
@@ -17,12 +16,12 @@ export const FavoritesList = () => {
     const [modalImage, setModalImage] = useState(null);
     const [modalDescription, setModalDescription] = useState("");
     const [notification, setNotification] = useState(null);
-    const [filter, setFilter] = useState('all');
+    const [filter, setFilter] = useState("all");
     const [sortOrders, setSortOrders] = useState({
-        height: 'descending',
-        width: 'descending',
-        likes: 'descending',
-        date: 'descending',
+        height: "descending",
+        width: "descending",
+        likes: "descending",
+        date: "descending",
     });
 
     useEffect(() => {
@@ -44,6 +43,12 @@ export const FavoritesList = () => {
         setFavorites(updatedFavorites);
         localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
         showNotification("Image removed from favorites.");
+    };
+
+    const handleClearAll = () => {
+        setFavorites([]);
+        localStorage.setItem("favorites", JSON.stringify([]));
+        showNotification("All favorites cleared.");
     };
 
     const openModal = (image) => {
@@ -73,16 +78,16 @@ export const FavoritesList = () => {
     const toggleSortOrder = (key) => {
         setSortOrders((prev) => ({
             ...prev,
-            [key]: prev[key] === 'ascending' ? 'descending' : 'ascending',
+            [key]: prev[key] === "ascending" ? "descending" : "ascending",
         }));
     };
 
     const filterAndSortFavorites = (favorites, filter, sortOrders) => {
         let filtered = [...favorites];
 
-        if (filter !== 'all') {
+        if (filter !== "all") {
             filtered.sort((a, b) => {
-                const order = sortOrders[filter] === 'ascending' ? 1 : -1;
+                const order = sortOrders[filter] === "ascending" ? 1 : -1;
                 return (a[filter] - b[filter]) * order;
             });
         }
@@ -107,17 +112,20 @@ export const FavoritesList = () => {
                     <span className="return-homepage">Homepage</span>
                     <img src={ReturnHomeIcon} alt="Return to HomePage" />
                 </button>
+                <button className="clear-all-button" onClick={handleClearAll}>
+                    Clear All Favorites
+                </button>
             </header>
 
             <div className="filter-buttons">
-                {['height', 'width', 'likes', 'date'].map((key) => (
+                {["height", "width", "likes", "date"].map((key) => (
                     <button
                         key={key}
-                        className={`filter-button ${filter === key ? 'active' : ''}`}
+                        className={`filter-button ${filter === key ? "active" : ""}`}
                         onClick={() => setFilter(key)}
                     >
                         {key.charAt(0).toUpperCase() + key.slice(1)}
-                        {sortOrders[key] === 'ascending' ? (
+                        {sortOrders[key] === "ascending" ? (
                             <FaSortUp
                                 className="sort-icon"
                                 onClick={(e) => {
@@ -159,7 +167,7 @@ export const FavoritesList = () => {
                         <div
                             key={image.id}
                             className={`image-card ${
-                                selectedImageId === image.id ? 'selected' : ''
+                                selectedImageId === image.id ? "selected" : ""
                             }`}
                             onClick={() =>
                                 setSelectedImageId((prev) => (prev === image.id ? null : image.id))
@@ -191,21 +199,18 @@ export const FavoritesList = () => {
 
             {isModalOpen && (
                 <div className="modal-overlay" onClick={closeModal}>
-                    <div
-                        className="modal-content"
-                        onClick={(e) => e.stopPropagation()}
-                    >
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <img
                             src={modalImage?.urls.small}
                             alt={modalImage?.alt_description || "Image"}
                             className="modal-image"
                         />
                         <h2>Edit your description</h2>
-                        <input
-                            type="text"
+                        <textarea
                             value={modalDescription}
                             onChange={(e) => setModalDescription(e.target.value)}
                             placeholder="Add a description..."
+                            rows={3}
                         />
                         <div className="modal-actions">
                             <button onClick={saveDescription}>Save</button>
@@ -215,12 +220,7 @@ export const FavoritesList = () => {
                 </div>
             )}
 
-            {notification && (
-                <div className="notification">
-                    {notification}
-                </div>
-            )}
-
+            {notification && <div className="notification">{notification}</div>}
         </div>
     );
 };

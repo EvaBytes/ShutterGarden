@@ -3,11 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchImages } from "../../features/unsplashSlice";
 import { DownloadButton } from "../../components/Buttons/DownloadButton.jsx";
 import { FavButton } from "../../components/Buttons/FavButton.jsx";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import search from "../../assets/searchSMALL.png";
 import heartPhoneIcon from "../../assets/heartPhone.png";
 import emptyHeart from "../../assets/IconFAV.png";
 import filledHeart from "../../assets/filledHeart.png";
+import debounce from "lodash/debounce";
 import "./HomePage.css";
 
 export const HomePage = () => {
@@ -17,6 +18,7 @@ export const HomePage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [favorites, setFavorites] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImageMobile, setSelectedImageMobile] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(false);
 
@@ -41,10 +43,9 @@ export const HomePage = () => {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [isModalOpen]);
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        dispatch(fetchImages(searchQuery));
-    };
+    const handleSearch = debounce((query) => {
+        dispatch(fetchImages(query));
+    }, 300);
 
     const handleToggleFavorite = (image) => {
         setFavorites((prev) =>
@@ -54,10 +55,16 @@ export const HomePage = () => {
         );
     };
 
+    const preloadImage = (url) => {
+        const img = new Image();
+        img.src = url;
+    };
+
     const openModal = (image) => {
         setIsImageLoading(true);
         setSelectedImage(image);
         setIsModalOpen(true);
+        preloadImage(image.urls.full);
     };
 
     const closeModal = () => {
@@ -69,29 +76,37 @@ export const HomePage = () => {
         setIsImageLoading(false);
     };
 
+    const handleImageClick = (image) => {
+        if (window.innerWidth <= 768) {
+            setSelectedImageMobile(prev => (prev?.id === image.id ? null : image));
+        } else {
+            openModal(image);
+        }
+    };
+
     return (
         <div className="homepage">
             <header className="homepage-header">
                 <button
                     className="favorites-button"
                     onClick={() => navigate("/favorites")}
+                    aria-label="Go to Favorites"
                 >
-                    <img
-                        className="favorites-icon"
-                        src={heartPhoneIcon}
-                        alt="Go to Favorites"
-                    />
+                    <img className="favorites-icon" src={heartPhoneIcon} alt="Go to Favorites" />
                     <span className="favorites-text">Favorites ❤ </span>
                 </button>
             </header>
 
-            <form className="search-bar" onSubmit={handleSearch}>
+            <form className="search-bar" onSubmit={(e) => e.preventDefault()}>
                 <input
                     type="text"
                     placeholder="What are you looking for?"
                     aria-label="Search Input"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        handleSearch(e.target.value);
+                    }}
                 />
                 <button type="submit" aria-label="Search">
                     <img src={search} alt="Search" />
@@ -100,13 +115,16 @@ export const HomePage = () => {
 
             {loading && <p className="loading">Loading images...</p>}
             {error && <p className="error-message">Error: {error}</p>}
+            {!loading && images.length === 0 && (
+                <p className="no-results">No images found. Try a different search.</p>
+            )}
 
             <div className="image-gallery">
                 {images.map((image) => (
                     <div
                         key={image.id}
-                        className="image-card"
-                        onClick={() => openModal(image)} 
+                        className={`image-card ${selectedImageMobile?.id === image.id ? "selected" : ""}`}
+                        onClick={() => handleImageClick(image)}
                     >
                         <img src={image.urls.small} alt={image.alt_description} />
                         <div className="image-overlay">
@@ -117,7 +135,7 @@ export const HomePage = () => {
                                 <FavButton
                                     onToggleFavorite={handleToggleFavorite}
                                     image={image}
-                                    isFavorite={favorites.some((fav) => fav.id === image.id)}
+                                    isFavorite={favorites.some(fav => fav.id === image.id)}
                                     filledIcon={filledHeart}
                                     emptyIcon={emptyHeart}
                                 />
@@ -130,16 +148,14 @@ export const HomePage = () => {
             {isModalOpen && (
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        {isImageLoading && (
-                            <p className="loading-spinner">Loading image...</p>
-                        )}
+                        {isImageLoading && <p className="loading-spinner">Loading image...</p>}
                         <img
                             src={selectedImage?.urls.full}
                             alt="Selected"
                             className="modal-image"
                             onLoad={handleImageLoaded}
                             style={{
-                                display: isImageLoading ? "none" : "block", 
+                                display: isImageLoading ? "none" : "block",
                             }}
                         />
                         <button className="close-button" onClick={closeModal}>
@@ -148,7 +164,6 @@ export const HomePage = () => {
                     </div>
                 </div>
             )}
-
         </div>
     );
 };

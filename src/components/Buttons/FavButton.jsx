@@ -7,8 +7,9 @@ export const FavButton = ({
     filledIcon, 
     emptyIcon 
 }) => {
-    const handleClick = () => {
-        if (typeof onToggleFavorite !== "function" || !image) {
+    const handleClick = (e) => {
+        e.stopPropagation(); 
+        if (!onToggleFavorite || !image) {
             console.error("onToggleFavorite must be a function and image must be provided.");
             return;
         }
