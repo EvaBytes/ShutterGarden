@@ -407,7 +407,23 @@
     background-color: rgb(240, 240, 240); 
     color: rgb(51, 51, 51);
 }
+.clear-all-button {
+    background-color: rgb(140, 169, 52); 
+    color: white;
+    font-size: .7rem;
+    font-weight: bold;
+    border: none;
+    padding: .7rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem; 
+    align-self: center; 
+}
 
+.clear-all-button:hover {
+    background-color: rgb(200, 50, 50);
+}
 
 
 @media only screen and (min-width: 1000px) {

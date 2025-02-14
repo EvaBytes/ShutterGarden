@@ -112,9 +112,6 @@ export const FavoritesList = () => {
                     <span className="return-homepage">Homepage</span>
                     <img src={ReturnHomeIcon} alt="Return to HomePage" />
                 </button>
-                <button className="clear-all-button" onClick={handleClearAll}>
-                    Clear All Favorites
-                </button>
             </header>
 
             <div className="filter-buttons">
@@ -162,39 +159,48 @@ export const FavoritesList = () => {
                     </div>
                 </div>
             ) : (
-                <div className="favorites-gallery">
-                    {sortedAndFilteredFavorites.map((image) => (
-                        <div
-                            key={image.id}
-                            className={`image-card ${
-                                selectedImageId === image.id ? "selected" : ""
-                            }`}
-                            onClick={() =>
-                                setSelectedImageId((prev) => (prev === image.id ? null : image.id))
-                            }
-                        >
-                            <img src={image.urls.small} alt={image.alt_description} />
-                            {selectedImageId === image.id && (
-                                <div className="image-overlay visible">
-                                    <DownloadButton image={image} />
-                                    <DeleteButton onDelete={() => handleDelete(image.id)} />
+                <>
+                    {/* Botón para limpiar todos los favoritos */}
+                    <button className="clear-all-button" onClick={handleClearAll}>
+                        Clear All Favorites
+                    </button>
+
+                    <div className="favorites-gallery">
+                        {sortedAndFilteredFavorites.map((image) => (
+                            <div
+                                key={image.id}
+                                className={`image-card ${
+                                    selectedImageId === image.id ? "selected" : ""
+                                }`}
+                                onClick={() =>
+                                    setSelectedImageId((prev) =>
+                                        prev === image.id ? null : image.id
+                                    )
+                                }
+                            >
+                                <img src={image.urls.small} alt={image.alt_description} />
+                                {selectedImageId === image.id && (
+                                    <div className="image-overlay visible">
+                                        <DownloadButton image={image} />
+                                        <DeleteButton onDelete={() => handleDelete(image.id)} />
+                                    </div>
+                                )}
+                                <div className="description-container">
+                                    <p>{image.alt_description || "No description added"}</p>
+                                    <button
+                                        className="edit-button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            openModal(image);
+                                        }}
+                                    >
+                                        <img src={EditText} alt="Edit Description" />
+                                    </button>
                                 </div>
-                            )}
-                            <div className="description-container">
-                                <p>{image.alt_description || "No description added"}</p>
-                                <button
-                                    className="edit-button"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        openModal(image);
-                                    }}
-                                >
-                                    <img src={EditText} alt="Edit Description" />
-                                </button>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                </>
             )}
 
             {isModalOpen && (
