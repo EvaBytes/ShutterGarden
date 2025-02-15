@@ -1,10 +1,11 @@
-body {
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
   background-color: rgb(200, 220, 191);
-  display: grid;
-  grid-template-rows: auto 1fr auto; 
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
@@ -26,9 +27,17 @@ body {
 }
 
 .main-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 70vh;
+}
+
+/*CHECK IT OUT, ISSUES WHEN ADDING A PIC*/
+.favorites-list {
+  flex: 1;
+  min-height: 500px;
+  display: flex;
 }
 
 .footer {
