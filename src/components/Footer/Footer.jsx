@@ -1,5 +1,7 @@
 import React from "react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
+import "./Footer.css"; 
+
 export const Footer = () => {
     return (
         <footer className="footer">
@@ -10,6 +12,7 @@ export const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="LinkedIn"
+                    className="linkedin" 
                 >
                     <FaLinkedin className="social-icon" />
                 </a>
@@ -18,6 +21,7 @@ export const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="GitHub"
+                    className="github" 
                 >
                     <FaGithub className="social-icon" />
                 </a>

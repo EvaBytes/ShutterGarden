@@ -407,24 +407,52 @@
     background-color: rgb(240, 240, 240); 
     color: rgb(51, 51, 51);
 }
+
+.favorites-content {
+    position: relative; 
+    width: 100%;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .clear-all-button {
-    background-color: rgb(140, 169, 52); 
+    background-color: rgb(255, 77, 77); 
     color: white;
     font-size: .7rem;
     font-weight: bold;
     border: none;
-    padding: .7rem 1rem;
-    border-radius: 10px;
+    padding: 1rem;
+    border-radius: 50%;
     cursor: pointer;
+    width: 3rem; 
+    height: 3rem; 
+    overflow: hidden;
     transition: background-color 0.3s ease;
-    margin-top: 1rem; 
+    margin: 1rem; 
     align-self: center; 
 }
 
 .clear-all-button:hover {
-    background-color: rgb(200, 50, 50);
+    width: auto; 
+    padding: .9rem 1.5rem; 
+    border-radius: 8px;
 }
 
+.trash-icon {
+    font-size: 1rem; 
+}
+
+.button-text {
+    opacity: 0; 
+    white-space: nowrap; 
+    transition: opacity 0.3s ease; 
+}
+
+.clear-all-button:hover .button-text {
+    opacity: 1; 
+}
 
 @media only screen and (min-width: 1000px) {
     .return-homepage {

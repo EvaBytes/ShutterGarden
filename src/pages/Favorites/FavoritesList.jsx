@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DownloadButton } from "../../components/Buttons/DownloadButton.jsx";
 import { DeleteButton } from "../../components/Buttons/DeleteButton.jsx";
-import { FaSortUp, FaSortDown } from "react-icons/fa";
+import { FaSortUp, FaSortDown, FaTrash } from "react-icons/fa";
 import ReturnHomeIcon from "../../assets/ReturnHome.png";
 import BackgroundFavorites from "../../assets/favoriteBG.png";
 import EditText from "../../assets/EditText.png";
@@ -143,7 +143,7 @@ export const FavoritesList = () => {
                 ))}
             </div>
 
-            {!favorites || favorites.length === 0 ? (
+                        {!favorites || favorites.length === 0 ? (
                 <div className="overlay-container">
                     <img
                         className="favorites-background"
@@ -159,49 +159,52 @@ export const FavoritesList = () => {
                     </div>
                 </div>
             ) : (
-                <>
-                    {/* Botón para limpiar todos los favoritos */}
-                    <button className="clear-all-button" onClick={handleClearAll}>
-                        Clear All Favorites
-                    </button>
-
-                    <div className="favorites-gallery">
-                        {sortedAndFilteredFavorites.map((image) => (
-                            <div
-                                key={image.id}
-                                className={`image-card ${
-                                    selectedImageId === image.id ? "selected" : ""
-                                }`}
-                                onClick={() =>
-                                    setSelectedImageId((prev) =>
-                                        prev === image.id ? null : image.id
-                                    )
-                                }
-                            >
-                                <img src={image.urls.small} alt={image.alt_description} />
-                                {selectedImageId === image.id && (
-                                    <div className="image-overlay visible">
-                                        <DownloadButton image={image} />
-                                        <DeleteButton onDelete={() => handleDelete(image.id)} />
-                                    </div>
-                                )}
-                                <div className="description-container">
-                                    <p>{image.alt_description || "No description added"}</p>
-                                    <button
-                                        className="edit-button"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            openModal(image);
-                                        }}
-                                    >
-                                        <img src={EditText} alt="Edit Description" />
-                                    </button>
+            <div className="favorites-content"> 
+                <div className="favorites-gallery">
+                    {sortedAndFilteredFavorites.map((image) => (
+                        <div
+                            key={image.id}
+                            className={`image-card ${
+                                selectedImageId === image.id ? "selected" : ""
+                            }`}
+                            onClick={() =>
+                                setSelectedImageId((prev) =>
+                                    prev === image.id ? null : image.id
+                                )
+                            }
+                        >
+                            <img src={image.urls.small} alt={image.alt_description} />
+                            {selectedImageId === image.id && (
+                                <div className="image-overlay visible">
+                                    <DownloadButton image={image} />
+                                    <DeleteButton onDelete={() => handleDelete(image.id)} />
                                 </div>
+                            )}
+                            <div className="description-container">
+                                <p>{image.alt_description || "No description added"}</p>
+                                <button
+                                    className="edit-button"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        openModal(image);
+                                    }}
+                                >
+                                    <img src={EditText} alt="Edit Description" />
+                                </button>
                             </div>
-                        ))}
-                    </div>
-                </>
-            )}
+                        </div>
+                    ))}
+                </div>
+                <button
+                    className="clear-all-button"
+                    onClick={handleClearAll}
+                    aria-label="Clear all favorites"
+                >
+                    <FaTrash className="trash-icon" /> 
+                    <span className="button-text">Clear All Favorites</span> 
+                </button>
+            </div>
+        )}
 
             {isModalOpen && (
                 <div className="modal-overlay" onClick={closeModal}>
