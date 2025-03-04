@@ -21,32 +21,45 @@ export const HomePage = () => {
     const [selectedImageMobile, setSelectedImageMobile] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(false);
+    const [page, setPage] = useState(1); // Estado para la página actual
 
+    // Cargar favoritos y la primera página de imágenes al montar el componente
     useEffect(() => {
         const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
         setFavorites(savedFavorites);
-        dispatch(fetchImages(""));
+        dispatch(fetchImages({ query: searchQuery, page: 1, per_page: 20 })); // Cargar la primera página con 20 imágenes
     }, [dispatch]);
 
+    // Guardar favoritos en localStorage cuando cambian
     useEffect(() => {
         localStorage.setItem("favorites", JSON.stringify(favorites));
     }, [favorites]);
 
+    // Detectar el scroll del usuario para cargar más imágenes
     useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === "Escape" && isModalOpen) {
-                closeModal();
+        const handleScroll = () => {
+            const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+            if (scrollTop + clientHeight >= scrollHeight - 10 && !loading) {
+                setPage((prevPage) => prevPage + 1); // Incrementar la página
             }
         };
 
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isModalOpen]);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [loading]);
 
+    // Cargar más imágenes cuando cambia la página
+    useEffect(() => {
+        dispatch(fetchImages({ query: searchQuery, page, per_page: 20 })); // Cargar más imágenes con 20 por página
+    }, [dispatch, searchQuery, page]);
+
+    // Función para manejar la búsqueda con debounce
     const handleSearch = debounce((query) => {
-        dispatch(fetchImages(query));
+        setPage(1); // Reiniciar la página al realizar una nueva búsqueda
+        dispatch(fetchImages({ query, page: 1, per_page: 20 })); // Cargar la primera página de resultados con 20 imágenes
     }, 300);
 
+    // Función para alternar favoritos
     const handleToggleFavorite = (image) => {
         setFavorites((prev) =>
             prev.some((fav) => fav.id === image.id)
@@ -55,30 +68,28 @@ export const HomePage = () => {
         );
     };
 
-    const preloadImage = (url) => {
-        const img = new Image();
-        img.src = url;
-    };
-
+    // Abrir el modal con la imagen seleccionada
     const openModal = (image) => {
         setIsImageLoading(true);
         setSelectedImage(image);
         setIsModalOpen(true);
-        preloadImage(image.urls.full);
     };
 
+    // Cerrar el modal
     const closeModal = () => {
         setIsModalOpen(false);
         setSelectedImage(null);
     };
 
+    // Manejar la carga de la imagen en el modal
     const handleImageLoaded = () => {
         setIsImageLoading(false);
     };
 
+    // Manejar el clic en una imagen (modal en móvil o desktop)
     const handleImageClick = (image) => {
         if (window.innerWidth <= 768) {
-            setSelectedImageMobile(prev => (prev?.id === image.id ? null : image));
+            setSelectedImageMobile((prev) => (prev?.id === image.id ? null : image));
         } else {
             openModal(image);
         }
@@ -135,7 +146,7 @@ export const HomePage = () => {
                                 <FavButton
                                     onToggleFavorite={handleToggleFavorite}
                                     image={image}
-                                    isFavorite={favorites.some(fav => fav.id === image.id)}
+                                    isFavorite={favorites.some((fav) => fav.id === image.id)}
                                     filledIcon={filledHeart}
                                     emptyIcon={emptyHeart}
                                 />

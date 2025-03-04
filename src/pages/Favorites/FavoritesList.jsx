@@ -142,6 +142,16 @@ export const FavoritesList = () => {
                     </button>
                 ))}
             </div>
+            {favorites.length > 0 && (
+                <button
+                    className="clear-all-button"
+                    onClick={handleClearAll}
+                    aria-label="Clear all favorites"
+                >
+                    <FaTrash className="trash-icon" /> 
+                    <span className="button-text">Clear All Favorites</span> 
+                </button>
+        )}
 
                         {!favorites || favorites.length === 0 ? (
                 <div className="overlay-container">
@@ -164,9 +174,7 @@ export const FavoritesList = () => {
                     {sortedAndFilteredFavorites.map((image) => (
                         <div
                             key={image.id}
-                            className={`image-card ${
-                                selectedImageId === image.id ? "selected" : ""
-                            }`}
+                            className={`image-card ${selectedImageId === image.id ? "selected" : ""}`}
                             onClick={() =>
                                 setSelectedImageId((prev) =>
                                     prev === image.id ? null : image.id
@@ -195,14 +203,6 @@ export const FavoritesList = () => {
                         </div>
                     ))}
                 </div>
-                <button
-                    className="clear-all-button"
-                    onClick={handleClearAll}
-                    aria-label="Clear all favorites"
-                >
-                    <FaTrash className="trash-icon" /> 
-                    <span className="button-text">Clear All Favorites</span> 
-                </button>
             </div>
         )}
 
@@ -216,6 +216,7 @@ export const FavoritesList = () => {
                         />
                         <h2>Edit your description</h2>
                         <textarea
+                            className="modal-textarea"
                             value={modalDescription}
                             onChange={(e) => setModalDescription(e.target.value)}
                             placeholder="Add a description..."
