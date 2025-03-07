@@ -9,4 +9,4 @@ const SearchButton = ({ onClick }) => {
     );
 };
 
-export default SearchButton;
+export {SearchButton};

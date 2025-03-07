@@ -25,22 +25,32 @@ const unsplashSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-        .addCase(fetchImages.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(fetchImages.fulfilled, (state, action) => {
+      .addCase(fetchImages.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchImages.fulfilled, (state, action) => {
+        if (action.payload.length === 0) {
+          state.images = []; // No hay imágenes, resetea el estado.
+        } else {
+          // Si hay una nueva búsqueda (query), resetea las imágenes
+          if (action.meta.arg.query) {
+            state.images = action.payload; // Sólo las nuevas imágenes
+          } else {
+            // Si no hay un query (búsqueda específica), agregamos nuevas imágenes
             const newImages = action.payload.filter(
-                (newImage) => !state.images.some((existingImage) => existingImage.id === newImage.id)
+              (newImage) => !state.images.some((existingImage) => existingImage.id === newImage.id)
             );
-            state.images = [...state.images, ...newImages]; 
-            state.loading = false;
-        })
-        .addCase(fetchImages.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        });
-      },
+            state.images = [...state.images, ...newImages];
+          }
+        }
+        state.loading = false;
+      })
+      .addCase(fetchImages.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
 export const { setImages } = unsplashSlice.actions;

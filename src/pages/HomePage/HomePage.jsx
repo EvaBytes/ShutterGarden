@@ -28,7 +28,7 @@ export const HomePage = () => {
         const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
         setFavorites(savedFavorites);
         dispatch(fetchImages({ query: searchQuery, page: 1, per_page: 20 })); // Cargar la primera página con 20 imágenes
-    }, [dispatch]);
+    }, [dispatch, searchQuery]); // Dependencia de searchQuery para actualizar con cada cambio
 
     // Guardar favoritos en localStorage cuando cambian
     useEffect(() => {
@@ -50,14 +50,23 @@ export const HomePage = () => {
 
     // Cargar más imágenes cuando cambia la página
     useEffect(() => {
-        dispatch(fetchImages({ query: searchQuery, page, per_page: 20 })); // Cargar más imágenes con 20 por página
+        if (searchQuery) {
+            dispatch(fetchImages({ query: searchQuery, page, per_page: 20 })); // Cargar más imágenes con 20 por página
+        }
     }, [dispatch, searchQuery, page]);
 
     // Función para manejar la búsqueda con debounce
-    const handleSearch = debounce((query) => {
+    const debouncedSearch = debounce((query) => {
         setPage(1); // Reiniciar la página al realizar una nueva búsqueda
         dispatch(fetchImages({ query, page: 1, per_page: 20 })); // Cargar la primera página de resultados con 20 imágenes
     }, 300);
+
+    // Función para manejar el cambio en la barra de búsqueda
+    const handleSearch = (e) => {
+        const query = e.target.value;
+        setSearchQuery(query); // Actualiza inmediatamente el estado del query
+        debouncedSearch(query); // Llama al debounce solo para realizar la búsqueda
+    };
 
     // Función para alternar favoritos
     const handleToggleFavorite = (image) => {
@@ -114,10 +123,7 @@ export const HomePage = () => {
                     placeholder="What are you looking for?"
                     aria-label="Search Input"
                     value={searchQuery}
-                    onChange={(e) => {
-                        setSearchQuery(e.target.value);
-                        handleSearch(e.target.value);
-                    }}
+                    onChange={handleSearch}  // Llamada a la función handleSearch
                 />
                 <button type="submit" aria-label="Search">
                     <img src={search} alt="Search" />
