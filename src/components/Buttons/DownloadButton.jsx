@@ -1,20 +1,30 @@
 import React from "react";
+import { saveAs } from "file-saver"; 
 import downloadIcon from "../../assets/DownloadSMALL.png";
 
 export const DownloadButton = ({ image }) => {
   const handleDownload = () => {
-      const link = document.createElement("a"); 
-      link.href = image.urls.full; 
-      link.download = `${image.id}.jpg`;
-      link.style.display = "none"; 
-      document.body.appendChild(link); 
-      link.click(); 
-      document.body.removeChild(link); 
+    const imageUrl = image.urls.full;
+
+    fetch(imageUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error al descargar la imagen");
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        saveAs(blob, `image-${image.id}.jpg`); 
+      })
+      .catch((error) => {
+        console.error("Error al descargar la imagen:", error);
+        alert("No se pudo descargar la imagen. Inténtalo de nuevo más tarde.");
+      });
   };
 
   return (
-      <button className="download-button" onClick={handleDownload}>
-        <img src={downloadIcon} alt="Download Icon" />
-      </button>
+    <button className="download-button" onClick={handleDownload}>
+      <img src={downloadIcon} alt="Download Icon" />
+    </button>
   );
 };
