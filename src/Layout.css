@@ -8,8 +8,24 @@ html, body {
   grid-template-rows: auto 1fr auto; 
 }
 
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .main-content {
-  grid-row: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto; /* Maneja el desbordamiento */
+}
+
+.favorites-list {
+  flex: 1;
+  min-height: 500px;
+  display: flex;
+  overflow: auto; /* Maneja el desbordamiento */
 }
 
 .logo {
@@ -28,18 +44,4 @@ html, body {
     width: 30%;
     height: auto;
   }
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 70vh;
-}
-
-/*CHECK IT OUT, ISSUES WHEN ADDING A PIC*/
-.favorites-list {
-  flex: 1;
-  min-height: 500px;
-  display: flex;
 }

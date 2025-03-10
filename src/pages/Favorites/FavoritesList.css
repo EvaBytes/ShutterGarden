@@ -511,7 +511,7 @@
         display: inline;
         background-color: rgb(255, 77, 77); 
         color: white;
-        font-size: .7rem;
+        font-size: .8rem;
         font-weight: 500;
         border: none;
         border-radius: 50%;
@@ -521,7 +521,7 @@
         overflow: hidden;
         transition: background-color 0.3s ease;
         padding-top: .8rem;
-        margin: .8rem 1rem; 
+        margin:1rem; 
         align-self: flex-end;
         position: absolute;
         top: 14%;
